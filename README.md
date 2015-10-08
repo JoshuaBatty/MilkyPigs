@@ -1,2 +1,0 @@
-# MilkyPigs
-MilkyPigs Research Software
