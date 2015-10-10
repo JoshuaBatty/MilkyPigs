@@ -4,66 +4,85 @@ class ModeSetup extends Mode
   ModeSetup() {
     int sliderWidth = 380;
     int sliderHeight = 50;
-    int colourWheelWidth = 440;
+    int colourWheelWidth = 160;
     int yOffset = 0;
+    int num_led_zones = 6;
 
     cp5.addTab("setup")
       .setColorBackground(color(0, 160, 100))
-      .setColorLabel(color(255))
-      .setColorActive(color(255, 128, 0))
-      .activateEvent(true)
-      .setId(2)
-      ;
+        .setColorLabel(color(255))
+          .setColorActive(color(255, 128, 0))
+            .activateEvent(true)
+              .setId(2)
+                ;
 
-    cp5.addColorWheel("ledColours", (width/2)-(colourWheelWidth/4), 10, colourWheelWidth/2 ).setRGB(color(128, 0, 255));
+    for (int i = 0; i < num_led_zones; i++) {
+      cp5.addColorWheel("ledZone"+str(1+i), 30+(colourWheelWidth*i), 150, colourWheelWidth ).setRGB(color(128, 0, 255));
+    }
 
     cp5.addSlider("timeOut")
-      .setPosition((width/2)-(sliderWidth/2), yOffset+250)
-      .setRange(0, 255)
-      .setSize(sliderWidth, sliderHeight)
-      .setValue(10)
-      .setColorValue(255)
-      .setColorLabel(0)
-      ;
+      .setPosition((width/2)-(sliderWidth/2), yOffset+360)
+        .setRange(0, 255)
+          .setSize(sliderWidth, sliderHeight)
+            .setValue(10)
+              .setColorValue(255)
+                .setColorLabel(0)
+                  ;
 
     yOffset += sliderHeight+10;
 
     cp5.addSlider("touchSensitivity")
-      .setPosition((width/2)-(sliderWidth/2), yOffset+250)
-      .setRange(0, 255)
-      .setSize(sliderWidth, sliderHeight)
-      .setValue(200)
-      .setColorValue(255)
-      .setColorLabel(0)
-      ;
+      .setPosition((width/2)-(sliderWidth/2), yOffset+360)
+        .setRange(0, 255)
+          .setSize(sliderWidth, sliderHeight)
+            .setValue(200)
+              .setColorValue(255)
+                .setColorLabel(0)
+                  ;
 
     yOffset += sliderHeight+10;
 
     cp5.addSlider("dispenseMaltesers")
-      .setPosition((width/2)-(sliderWidth/2), yOffset+250)
-      .setRange(0, 255)
-      .setSize(sliderWidth, sliderHeight)
-      .setValue(0)
-      .setColorValue(255)
-      .setColorLabel(0)
-      ;
+      .setPosition((width/2)-(sliderWidth/2), yOffset+360)
+        .setRange(0, 255)
+          .setSize(sliderWidth, sliderHeight)
+            .setValue(0)
+              .setColorValue(255)
+                .setColorLabel(0)
+                  ;
 
     yOffset += sliderHeight+10;
 
     cp5.addSlider("airBlast")
-      .setPosition((width/2)-(sliderWidth/2), yOffset+250)
-      .setRange(0, 255)
-      .setSize(sliderWidth, sliderHeight)
-      .setValue(0)
-      .setColorValue(255)
-      .setColorLabel(0)
-      ;
+      .setPosition((width/2)-(sliderWidth/2), yOffset+360)
+        .setRange(0, 255)
+          .setSize(sliderWidth, sliderHeight)
+            .setValue(0)
+              .setColorValue(255)
+                .setColorLabel(0)
+                  ;
 
-    cp5.getController("ledColours").moveTo("setup");
+    cp5.addButton("DefaultValues")
+      .setValue(0)
+        .setPosition((width/2)-190, 630)
+          .setSize(180, 39)
+            ;
+    cp5.addButton("SetNewValues")
+      .setValue(0)
+        .setPosition((width/2)+10, 630)
+          .setSize(180, 39)
+            ;
+
+    for (int i = 0; i < num_led_zones; i++) {
+      cp5.getController("ledZone"+str(1+i)).moveTo("setup");
+    }
+
     cp5.getController("timeOut").moveTo("setup");
     cp5.getController("touchSensitivity").moveTo("setup");
     cp5.getController("dispenseMaltesers").moveTo("setup");
     cp5.getController("airBlast").moveTo("setup");
+    cp5.getController("DefaultValues").moveTo("setup");
+    cp5.getController("SetNewValues").moveTo("setup");
   }
 
   void setup() {
@@ -82,7 +101,6 @@ class ModeSetup extends Mode
 
   void press( String colour )
   {
-
     int l = millis() - startTime;
     int p = testList.get( currentTestIndex ).promptList.get( currentPromptIndex );
     String r = colour;
@@ -133,3 +151,4 @@ class ModeSetup extends Mode
     mode = CHOOSE;
   }
 }
+

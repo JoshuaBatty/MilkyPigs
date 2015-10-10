@@ -88,14 +88,21 @@ void setup()
 // RECEIVE GUI EVENTS
 public void controlEvent(ControlEvent theEvent) {
 
-
-
   if (init == true) {
     if (theEvent.isController()) {
-      println(theEvent.getController().getName());
       String name = theEvent.getController().getName();
       Controller control = theEvent.getController();
+      println(name);
 
+      //----------------- FEEDBACK MODE
+      if (name == "ledZone1") {
+        println("FUCK");
+        ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
+        //modeFeedback.setZone1Colour(cp5.get(ColorWheel.class, "ledZone1").getRGB());
+        color c = color(120, 20, random(255));
+        modeFeedback.setZone1Colour(c);
+      }
+      
       //----------------- KILL SWITCH
       if (name == "KillSwitch") {
         mode = TEST;
@@ -144,15 +151,10 @@ public void controlEvent(ControlEvent theEvent) {
         arduinoSend.valuesToSend[5] = (int)control.getValue();
       } else if (name == "airBlast") {
         arduinoSend.valuesToSend[6] = (int)control.getValue();
+      } else if (name == "SetNewValues") {
+        arduinoSend.sendValues();
       }
 
-      //----------------- FEEDBACK MODE
-      if (name == "ledColours") {
-        ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
-        ColorWheel c = cp5.get(ColorWheel.class, "ledColurs");
-//        ;
-          modeFeedback.setLedColour(color(c.getRGB()));
-      }
     }
   }
 }
@@ -163,6 +165,7 @@ public void controlEvent(ControlEvent theEvent) {
 void draw()
 {
   modes.get(mode).draw();
+  // background(cp5.get(ColorWheel.class, "ledZone1").getRGB());
 }
 
 //--------------------------------------

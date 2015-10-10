@@ -4,7 +4,8 @@ class ModeFeedback extends Mode
   PImage gun = loadImage("gun.jpg"); 
   PImage chocolate = loadImage("maltesers.jpg"); 
 
-  color ledColour = color(255,100,0);
+  color ledColour[] = new color[6];
+
   ModeFeedback() {
     cp5.addTab("feedback")
       .setColorBackground(color(0, 160, 100))
@@ -16,19 +17,30 @@ class ModeFeedback extends Mode
   }
   void setup() {
   }
-  
-  void setLedColour(color c){
-    ledColour = c;
-    println("R = ", red(ledColour));
+
+  void setZone1Colour(color c) {
+    ledColour[0] = c;
+    println("R = ", red(ledColour[0]));
+    println("FUCK");
   }
 
   void draw()
   {
     background( 255 );
     pushStyle();
-    fill( ledColour );
-    for (int i = 0; i < 52; i++) {
-      rect(17+(18*i)+33, 150, 9, 9);
+    /*
+    for (int i = 0; i < 54; i++) {
+     //fill( ledColour[i] );
+     rect(17+(18*i)+33, 320, 9, 9);
+     }
+     */
+     int count = 0;
+    for (int j = 0; j < 6; j++) {
+      for (int i = 0; i < 9; i++) {
+        fill( ledColour[j] );
+        rect(17+(18*count)+33, 320, 9, 9);
+        count++;
+      }
     }
     popStyle();
 
@@ -42,13 +54,12 @@ class ModeFeedback extends Mode
 
     //draw chocolate
     if (frameCount % 5 == 0) {
-     // image(chocolate, 50, height/2, 240, 150);
+      // image(chocolate, 50, height/2, 240, 150);
     }
   }
 
   void mousePressed()
   {
-
   }
 
 
