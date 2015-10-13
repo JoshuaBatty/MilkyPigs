@@ -22,6 +22,24 @@ class ModeSetup extends Mode
       .setId(1)
       ;
 
+    cp5.addButton("Set Test 1 Colours")
+      .setValue(0)
+      .setPosition(((width/2)-90) - 200, 80)
+      .setSize(180, 39)
+      ;
+
+    cp5.addButton("Set Test 2 Colours")
+      .setValue(0)
+      .setPosition((width/2)-90, 80)
+      .setSize(180, 39)
+      ;
+
+    cp5.addButton("Set Test 3 Colours")
+      .setValue(0)
+      .setPosition(((width/2)-90) + 200, 80)
+      .setSize(180, 39)
+      ;
+
     for (int i = 0; i < num_led_zones; i++) {
       cp5.addColorWheel("ledZone"+str(1+i), 30+(colourWheelWidth*i), 140, colourWheelWidth ).setRGB(color(0, 0, 0));
     }
@@ -88,7 +106,7 @@ class ModeSetup extends Mode
     for (int i = 0; i < num_led_zones; i++) {
       cp5.getController("ledZone"+str(1+i)).moveTo("setup");
     }
-
+    
     cp5.getController("timeOut").moveTo("setup");
     cp5.getController("touchSensitivity").moveTo("setup");
     cp5.getController("dispenseMaltesers").moveTo("setup");
@@ -96,6 +114,9 @@ class ModeSetup extends Mode
     cp5.getController("DefaultValues").moveTo("setup");
     cp5.getController("SetNewValues").moveTo("setup");
     cp5.getController("SelfTest").moveTo("setup");
+    cp5.getController("Set Test 1 Colours").moveTo("setup");
+    cp5.getController("Set Test 2 Colours").moveTo("setup");
+    cp5.getController("Set Test 3 Colours").moveTo("setup");
   }
 
   //----------------------------------------------
@@ -124,7 +145,7 @@ class ModeSetup extends Mode
       cw.setRGB(color(random(255), random(255), random(255)));
     }
   }
-  
+
   //----------------------------------------------
   void runSelfTest() {
     arduino.valuesToSend[0] = M;
