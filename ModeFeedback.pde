@@ -12,7 +12,7 @@ class ModeFeedback extends Mode
       .setColorLabel(color(255))
       .setColorActive(color(255, 128, 0))
       .activateEvent(true)
-      .setId(1)
+      .setId(2)
       ;
   }
   void setup() {

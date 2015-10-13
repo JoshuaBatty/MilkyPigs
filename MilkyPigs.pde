@@ -8,8 +8,8 @@ static final int PAUSE = 2;
 static final int CHOOSE = 3;
 
 static final int TEST = 0;
-static final int FEEDBACK = 1;
-static final int SETUP = 2;
+static final int SETUP = 1;
+static final int FEEDBACK = 2;
 
 int mode = CHOOSE;
 
@@ -76,8 +76,8 @@ void setup()
 
   //Initiating order is important - must match order of enums respective integers 
   modes.add( new ModeTest() );
-  modes.add( new ModeFeedback() );
   modes.add( new ModeSetup() );
+  modes.add( new ModeFeedback() );
 
   mode = TEST;
 
@@ -171,6 +171,9 @@ public void controlEvent(ControlEvent theEvent) {
         arduinoSend.valuesToSend[6] = (int)control.getValue();
       } else if (name.equals("SetNewValues")) {
         arduinoSend.sendValues();
+      } else if (name.equals("DefaultValues")) {
+        ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
+        modeSetup.init();
       }
 
     }

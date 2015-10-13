@@ -1,77 +1,83 @@
 
 class ModeSetup extends Mode
 {
+  int timeOut = 10;
+  int touchSensitivity = 200;
+  int dispenseMaltesers = 0;
+  int airBlast = 0;
+
+  int num_led_zones = 6;
+
   ModeSetup() {
     int sliderWidth = 380;
     int sliderHeight = 50;
     int colourWheelWidth = 160;
     int yOffset = 0;
-    int num_led_zones = 6;
 
     cp5.addTab("setup")
       .setColorBackground(color(0, 160, 100))
-        .setColorLabel(color(255))
-          .setColorActive(color(255, 128, 0))
-            .activateEvent(true)
-              .setId(2)
-                ;
+      .setColorLabel(color(255))
+      .setColorActive(color(255, 128, 0))
+      .activateEvent(true)
+      .setId(1)
+      ;
 
     for (int i = 0; i < num_led_zones; i++) {
-      cp5.addColorWheel("ledZone"+str(1+i), 30+(colourWheelWidth*i), 140, colourWheelWidth ).setRGB(color(128, 0, 255));
+      cp5.addColorWheel("ledZone"+str(1+i), 30+(colourWheelWidth*i), 140, colourWheelWidth ).setRGB(color(0, 0, 0));
     }
 
     cp5.addSlider("timeOut")
       .setPosition((width/2)-(sliderWidth/2), yOffset+360)
-        .setRange(0, 255)
-          .setSize(sliderWidth, sliderHeight)
-            .setValue(10)
-              .setColorValue(255)
-                .setColorLabel(0)
-                  ;
+      .setRange(0, 255)
+      .setSize(sliderWidth, sliderHeight)
+      .setValue(timeOut)
+      .setColorValue(255)
+      .setColorLabel(0)
+      ;
 
     yOffset += sliderHeight+10;
 
     cp5.addSlider("touchSensitivity")
       .setPosition((width/2)-(sliderWidth/2), yOffset+360)
-        .setRange(0, 255)
-          .setSize(sliderWidth, sliderHeight)
-            .setValue(200)
-              .setColorValue(255)
-                .setColorLabel(0)
-                  ;
+      .setRange(0, 255)
+      .setSize(sliderWidth, sliderHeight)
+      .setValue(touchSensitivity)
+      .setColorValue(255)
+      .setColorLabel(0)
+      ;
 
     yOffset += sliderHeight+10;
 
     cp5.addSlider("dispenseMaltesers")
       .setPosition((width/2)-(sliderWidth/2), yOffset+360)
-        .setRange(0, 255)
-          .setSize(sliderWidth, sliderHeight)
-            .setValue(0)
-              .setColorValue(255)
-                .setColorLabel(0)
-                  ;
+      .setRange(0, 255)
+      .setSize(sliderWidth, sliderHeight)
+      .setValue(dispenseMaltesers)
+      .setColorValue(255)
+      .setColorLabel(0)
+      ;
 
     yOffset += sliderHeight+10;
 
     cp5.addSlider("airBlast")
       .setPosition((width/2)-(sliderWidth/2), yOffset+360)
-        .setRange(0, 255)
-          .setSize(sliderWidth, sliderHeight)
-            .setValue(0)
-              .setColorValue(255)
-                .setColorLabel(0)
-                  ;
+      .setRange(0, 255)
+      .setSize(sliderWidth, sliderHeight)
+      .setValue(airBlast)
+      .setColorValue(255)
+      .setColorLabel(0)
+      ;
 
     cp5.addButton("DefaultValues")
       .setValue(0)
-        .setPosition((width/2)-190, 630)
-          .setSize(180, 39)
-            ;
+      .setPosition((width/2)-190, 630)
+      .setSize(180, 39)
+      ;
     cp5.addButton("SetNewValues")
       .setValue(0)
-        .setPosition((width/2)+10, 630)
-          .setSize(180, 39)
-            ;
+      .setPosition((width/2)+10, 630)
+      .setSize(180, 39)
+      ;
 
     for (int i = 0; i < num_led_zones; i++) {
       cp5.getController("ledZone"+str(1+i)).moveTo("setup");
@@ -83,6 +89,29 @@ class ModeSetup extends Mode
     cp5.getController("airBlast").moveTo("setup");
     cp5.getController("DefaultValues").moveTo("setup");
     cp5.getController("SetNewValues").moveTo("setup");
+  }
+
+  void init() {
+    timeOut = 10;
+    touchSensitivity = 200;
+    dispenseMaltesers = 0;
+    airBlast = 0;
+
+    cp5.getController("timeOut").setValue(timeOut);
+    cp5.getController("touchSensitivity").setValue(touchSensitivity);
+    cp5.getController("dispenseMaltesers").setValue(dispenseMaltesers);
+    cp5.getController("airBlast").setValue(airBlast);
+
+    arduinoSend.valuesToSend[3] = timeOut;
+    arduinoSend.valuesToSend[4] = touchSensitivity;
+    arduinoSend.valuesToSend[5] = dispenseMaltesers;
+    arduinoSend.valuesToSend[6] = airBlast;
+    arduinoSend.sendValues();
+
+    for (int i = 0; i < num_led_zones; i++) {
+      ColorWheel cw = (ColorWheel)cp5.getController("ledZone"+str(1+i));
+      cw.setRGB(color(random(255), random(255), random(255)));
+    }
   }
 
   void setup() {
