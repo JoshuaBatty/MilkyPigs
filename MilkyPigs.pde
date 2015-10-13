@@ -176,6 +176,18 @@ public void controlEvent(ControlEvent theEvent) {
       } else if (name.equals("SelfTest")) {
         ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
         modeSetup.runSelfTest();
+      } else if (name.equals("Set Test 1 Colours")) {
+        ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
+        ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
+        modeSetup.test1Colours = modeFeedback.ledColour;
+      } else if (name.equals("Set Test 2 Colours")) {
+        ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
+        ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
+        modeSetup.test2Colours = modeFeedback.ledColour;
+      } else if (name.equals("Set Test 3 Colours")) {
+        ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
+        ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
+        modeSetup.test3Colours = modeFeedback.ledColour;
       }
     }
   }

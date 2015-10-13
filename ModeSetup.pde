@@ -7,6 +7,10 @@ class ModeSetup extends Mode
   int airBlast = 0;
 
   int num_led_zones = 6;
+  
+  color test1Colours[] = new color[6]; 
+  color test2Colours[] = new color[6]; 
+  color test3Colours[] = new color[6]; 
 
   ModeSetup() {
     int sliderWidth = 380;
