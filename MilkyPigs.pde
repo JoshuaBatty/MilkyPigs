@@ -57,7 +57,8 @@ void setup()
     .setValue(0)
     .setPosition((width-190), 20)
     .setSize(170, 79)
-    .setColorForeground(color(255, 0, 0));
+    .setColorForeground(color(255, 0, 0))
+    .setColorBackground(color(205, 0, 0));
   ;
 
   // Arduino 
@@ -95,16 +96,33 @@ public void controlEvent(ControlEvent theEvent) {
       println(name);
 
       //----------------- FEEDBACK MODE
-      if (name == "ledZone1") {
-        println("FUCK");
+      if (name.equals("ledZone1")) {
         ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
-        //modeFeedback.setZone1Colour(cp5.get(ColorWheel.class, "ledZone1").getRGB());
-        color c = color(120, 20, random(255));
-        modeFeedback.setZone1Colour(c);
+        modeFeedback.setZone1Colour(cp5.get(ColorWheel.class, "ledZone1").getRGB());
+      } 
+      else if (name.equals("ledZone2")) {
+        ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
+        modeFeedback.setZone2Colour(cp5.get(ColorWheel.class, "ledZone2").getRGB());
+      }
+      else if (name.equals("ledZone3")) {
+        ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
+        modeFeedback.setZone3Colour(cp5.get(ColorWheel.class, "ledZone3").getRGB());
+      }
+      else if (name.equals("ledZone4")) {
+        ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
+        modeFeedback.setZone4Colour(cp5.get(ColorWheel.class, "ledZone4").getRGB());
+      }
+      else if (name.equals("ledZone5")) {
+        ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
+        modeFeedback.setZone5Colour(cp5.get(ColorWheel.class, "ledZone5").getRGB());
+      }
+      else if (name.equals("ledZone6")) {
+        ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
+        modeFeedback.setZone6Colour(cp5.get(ColorWheel.class, "ledZone6").getRGB());
       }
       
       //----------------- KILL SWITCH
-      if (name == "KillSwitch") {
+      if (name.equals("KillSwitch")) {
         mode = TEST;
         cp5.getTab("default").bringToFront();
         cp5.getTab("default").setActive(true);
@@ -122,17 +140,17 @@ public void controlEvent(ControlEvent theEvent) {
       }
 
       //----------------- TEST MODE
-      if (name == "Test1") {
+      if (name.equals("Test1")) {
         ModeTest modeTest = (ModeTest)modes.get(mode);
         modeTest.setTestMode(1);
-      } else if (name == "Test2") {
+      } else if (name.equals("Test2")) {
         ModeTest modeTest = (ModeTest)modes.get(mode);
         modeTest.setTestMode(2);
-      } else if (name == "Test3") {
+      } else if (name.equals("Test3")) {
         ModeTest modeTest = (ModeTest)modes.get(mode);
         modeTest.setTestMode(3);
       }
-      if (name == "StartTest") {
+      if (name.equals("StartTest")) {
         mode = FEEDBACK;
         cp5.getTab("feedback").bringToFront();
         cp5.getTab("feedback").setActive(true);
@@ -143,15 +161,15 @@ public void controlEvent(ControlEvent theEvent) {
       }
 
       //----------------- SETUP MODE
-      if (name == "timeOut") {
+      if (name.equals("timeOut")) {
         arduinoSend.valuesToSend[3] = (int)control.getValue();
-      } else if (name == "touchSensitivity") {
+      } else if (name.equals("touchSensitivity")) {
         arduinoSend.valuesToSend[4] = (int)control.getValue();
-      } else if (name == "dispenseMaltesers") {
+      } else if (name.equals("dispenseMaltesers")) {
         arduinoSend.valuesToSend[5] = (int)control.getValue();
-      } else if (name == "airBlast") {
+      } else if (name.equals("airBlast")) {
         arduinoSend.valuesToSend[6] = (int)control.getValue();
-      } else if (name == "SetNewValues") {
+      } else if (name.equals("SetNewValues")) {
         arduinoSend.sendValues();
       }
 

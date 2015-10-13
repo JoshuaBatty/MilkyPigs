@@ -17,7 +17,7 @@ class ModeSetup extends Mode
                 ;
 
     for (int i = 0; i < num_led_zones; i++) {
-      cp5.addColorWheel("ledZone"+str(1+i), 30+(colourWheelWidth*i), 150, colourWheelWidth ).setRGB(color(128, 0, 255));
+      cp5.addColorWheel("ledZone"+str(1+i), 30+(colourWheelWidth*i), 140, colourWheelWidth ).setRGB(color(128, 0, 255));
     }
 
     cp5.addSlider("timeOut")
@@ -151,4 +151,3 @@ class ModeSetup extends Mode
     mode = CHOOSE;
   }
 }
-

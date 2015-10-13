@@ -3,10 +3,11 @@ Serial arduinoPort;  // Create object from Serial class
 
 static final int M = 77;
 static final int P = 80;
+static final int LED = 4;
 
 class ArduinoSend {
 
-  int[] valuesToSend = {M, P, 0, 0, 0, 0, 0};
+  int[] valuesToSend = {M, P, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   byte out[] = new byte[7];
 
   ArduinoSend(PApplet papp) {

@@ -20,25 +20,63 @@ class ModeFeedback extends Mode
 
   void setZone1Colour(color c) {
     ledColour[0] = c;
-    println("R = ", red(ledColour[0]));
-    println("FUCK");
+    arduinoSend.valuesToSend[2] = LED;
+    arduinoSend.valuesToSend[3] = (int)red(c);
+    arduinoSend.valuesToSend[4] = (int)green(c);
+    arduinoSend.valuesToSend[5] = (int)blue(c);
+    arduinoSend.sendValues();
+  }
+  void setZone2Colour(color c) {
+    ledColour[1] = c;    
+    arduinoSend.valuesToSend[2] = LED;
+    arduinoSend.valuesToSend[6] = (int)red(c);
+    arduinoSend.valuesToSend[7] = (int)green(c);
+    arduinoSend.valuesToSend[8] = (int)blue(c);
+    arduinoSend.sendValues();
+  }
+  void setZone3Colour(color c) {
+    ledColour[2] = c;
+    arduinoSend.valuesToSend[2] = LED;
+    arduinoSend.valuesToSend[9] = (int)red(c);
+    arduinoSend.valuesToSend[10] = (int)green(c);
+    arduinoSend.valuesToSend[11] = (int)blue(c);
+    arduinoSend.sendValues();
+  }
+  void setZone4Colour(color c) {
+    ledColour[3] = c;
+    arduinoSend.valuesToSend[2] = LED;
+    arduinoSend.valuesToSend[12] = (int)red(c);
+    arduinoSend.valuesToSend[13] = (int)green(c);
+    arduinoSend.valuesToSend[14] = (int)blue(c);
+    arduinoSend.sendValues();
+  }
+  void setZone5Colour(color c) {
+    ledColour[4] = c;
+    arduinoSend.valuesToSend[2] = LED;
+    arduinoSend.valuesToSend[15] = (int)red(c);
+    arduinoSend.valuesToSend[16] = (int)green(c);
+    arduinoSend.valuesToSend[17] = (int)blue(c);
+    arduinoSend.sendValues();
+  }
+  void setZone6Colour(color c) {
+    ledColour[5] = c;
+    arduinoSend.valuesToSend[2] = LED;
+    arduinoSend.valuesToSend[18] = (int)red(c);
+    arduinoSend.valuesToSend[19] = (int)green(c);
+    arduinoSend.valuesToSend[20] = (int)blue(c);
+    arduinoSend.sendValues();
   }
 
   void draw()
   {
     background( 255 );
     pushStyle();
-    /*
-    for (int i = 0; i < 54; i++) {
-     //fill( ledColour[i] );
-     rect(17+(18*i)+33, 320, 9, 9);
-     }
-     */
-     int count = 0;
+
+    int count = 0;
     for (int j = 0; j < 6; j++) {
       for (int i = 0; i < 9; i++) {
         fill( ledColour[j] );
-        rect(17+(18*count)+33, 320, 9, 9);
+        rect((18*count)+33, 320, 9, 9);
         count++;
       }
     }
