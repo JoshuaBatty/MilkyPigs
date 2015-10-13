@@ -139,12 +139,30 @@ public void controlEvent(ControlEvent theEvent) {
       if (name.equals("Test1")) {
         ModeTest modeTest = (ModeTest)modes.get(mode);
         modeTest.setTestMode(1);
+
+        ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
+        String[] colours = loadStrings("data/ColourPalettes/test1Colours.txt");
+        for (int i =0; i<colours.length; i++) {
+          modeSetup.setWheelColour(i, int(colours[i]));
+        }
       } else if (name.equals("Test2")) {
         ModeTest modeTest = (ModeTest)modes.get(mode);
         modeTest.setTestMode(2);
+
+        ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
+        String[] colours = loadStrings("data/ColourPalettes/test2Colours.txt");
+        for (int i =0; i<colours.length; i++) {
+          modeSetup.setWheelColour(i, int(colours[i]));
+        }
       } else if (name.equals("Test3")) {
         ModeTest modeTest = (ModeTest)modes.get(mode);
         modeTest.setTestMode(3);
+
+        ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
+        String[] colours = loadStrings("data/ColourPalettes/test3Colours.txt");
+        for (int i =0; i<colours.length; i++) {
+          modeSetup.setWheelColour(i, int(colours[i]));
+        }
       }
       if (name.equals("StartTest")) {
         mode = FEEDBACK;
@@ -180,14 +198,17 @@ public void controlEvent(ControlEvent theEvent) {
         ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
         ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
         modeSetup.test1Colours = modeFeedback.ledColour;
+        saveStrings("data/ColourPalettes/test1Colours.txt", str(modeSetup.test1Colours));
       } else if (name.equals("Set Test 2 Colours")) {
         ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
         ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
         modeSetup.test2Colours = modeFeedback.ledColour;
+        saveStrings("data/ColourPalettes/test2Colours.txt", str(modeSetup.test1Colours));
       } else if (name.equals("Set Test 3 Colours")) {
         ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
         ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
         modeSetup.test3Colours = modeFeedback.ledColour;
+        saveStrings("data/ColourPalettes/test3Colours.txt", str(modeSetup.test1Colours));
       }
     }
   }

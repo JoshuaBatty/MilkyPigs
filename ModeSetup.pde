@@ -7,7 +7,7 @@ class ModeSetup extends Mode
   int airBlast = 0;
 
   int num_led_zones = 6;
-  
+
   color test1Colours[] = new color[6]; 
   color test2Colours[] = new color[6]; 
   color test3Colours[] = new color[6]; 
@@ -45,7 +45,7 @@ class ModeSetup extends Mode
       ;
 
     for (int i = 0; i < num_led_zones; i++) {
-      cp5.addColorWheel("ledZone"+str(1+i), 30+(colourWheelWidth*i), 140, colourWheelWidth ).setRGB(color(0, 0, 0));
+      cp5.addColorWheel("ledZone"+str(1+i), 30+(colourWheelWidth*i), 140, colourWheelWidth ).setRGB(color(0, 0, 255));
     }
 
     cp5.addSlider("timeOut")
@@ -110,7 +110,7 @@ class ModeSetup extends Mode
     for (int i = 0; i < num_led_zones; i++) {
       cp5.getController("ledZone"+str(1+i)).moveTo("setup");
     }
-    
+
     cp5.getController("timeOut").moveTo("setup");
     cp5.getController("touchSensitivity").moveTo("setup");
     cp5.getController("dispenseMaltesers").moveTo("setup");
@@ -143,11 +143,12 @@ class ModeSetup extends Mode
     arduino.valuesToSend[5] = dispenseMaltesers;
     arduino.valuesToSend[6] = airBlast;
     arduino.sendValues();
+  }
 
-    for (int i = 0; i < num_led_zones; i++) {
-      ColorWheel cw = (ColorWheel)cp5.getController("ledZone"+str(1+i));
-      cw.setRGB(color(random(255), random(255), random(255)));
-    }
+  //----------------------------------------------
+  void setWheelColour(int num, color colour) {
+    ColorWheel cw = (ColorWheel)cp5.getController("ledZone"+str(1+num));
+    cw.setRGB(colour);
   }
 
   //----------------------------------------------
