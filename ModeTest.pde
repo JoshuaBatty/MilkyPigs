@@ -86,34 +86,37 @@ class ModeTest extends Mode
   }
 
   void setTestMode(int testMode) {
+    arduino.valuesToSend[0] = M;
+    arduino.valuesToSend[1] = P;
+    
     if (testMode == 0) {
       cp5.getController("LeftPad").setValue(0);  
       cp5.getController("MiddlePad").setValue(0);  
       cp5.getController("RightPad").setValue(0);
-      arduinoSend.valuesToSend[3] = 0;
-      arduinoSend.valuesToSend[4] = 0;
-      arduinoSend.valuesToSend[5] = 0;
+      arduino.valuesToSend[3] = 0;
+      arduino.valuesToSend[4] = 0;
+      arduino.valuesToSend[5] = 0;
     } else if (testMode == 1) {
       cp5.getController("LeftPad").setValue(1);  
       cp5.getController("MiddlePad").setValue(0);  
       cp5.getController("RightPad").setValue(1);
-      arduinoSend.valuesToSend[3] = 1;
-      arduinoSend.valuesToSend[4] = 0;
-      arduinoSend.valuesToSend[5] = 1;
+      arduino.valuesToSend[3] = 1;
+      arduino.valuesToSend[4] = 0;
+      arduino.valuesToSend[5] = 1;
     } else if (testMode == 2) {
       cp5.getController("LeftPad").setValue(0);  
       cp5.getController("MiddlePad").setValue(1);  
       cp5.getController("RightPad").setValue(0);
-      arduinoSend.valuesToSend[3] = 0;
-      arduinoSend.valuesToSend[4] = 1;
-      arduinoSend.valuesToSend[5] = 0;
+      arduino.valuesToSend[3] = 0;
+      arduino.valuesToSend[4] = 1;
+      arduino.valuesToSend[5] = 0;
     } else if (testMode == 3) {
       cp5.getController("LeftPad").setValue(1);  
       cp5.getController("MiddlePad").setValue(1);  
       cp5.getController("RightPad").setValue(1);
-      arduinoSend.valuesToSend[3] = 1;
-      arduinoSend.valuesToSend[4] = 1;
-      arduinoSend.valuesToSend[5] = 1;
+      arduino.valuesToSend[3] = 1;
+      arduino.valuesToSend[4] = 1;
+      arduino.valuesToSend[5] = 1;
     }
   }
 

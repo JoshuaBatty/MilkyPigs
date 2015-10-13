@@ -8,6 +8,11 @@ class TestResult
 
   // Which button is pressed? 
   
+  // Josh
+  String state;
+  String buttonPressed;
+  String testDuration;
+  
   //results
   String startDate;
   String startTime;
@@ -55,4 +60,3 @@ class TestResult
     totalMillis = endMillis - startMillis;
   }
 }
-

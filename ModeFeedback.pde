@@ -20,51 +20,51 @@ class ModeFeedback extends Mode
 
   void setZone1Colour(color c) {
     ledColour[0] = c;
-    arduinoSend.valuesToSend[2] = LED;
-    arduinoSend.valuesToSend[3] = (int)red(c);
-    arduinoSend.valuesToSend[4] = (int)green(c);
-    arduinoSend.valuesToSend[5] = (int)blue(c);
-    arduinoSend.sendValues();
+    arduino.valuesToSend[2] = LED;
+    arduino.valuesToSend[3] = (int)red(c);
+    arduino.valuesToSend[4] = (int)green(c);
+    arduino.valuesToSend[5] = (int)blue(c);
+    arduino.sendValues();
   }
   void setZone2Colour(color c) {
     ledColour[1] = c;    
-    arduinoSend.valuesToSend[2] = LED;
-    arduinoSend.valuesToSend[6] = (int)red(c);
-    arduinoSend.valuesToSend[7] = (int)green(c);
-    arduinoSend.valuesToSend[8] = (int)blue(c);
-    arduinoSend.sendValues();
+    arduino.valuesToSend[2] = LED;
+    arduino.valuesToSend[6] = (int)red(c);
+    arduino.valuesToSend[7] = (int)green(c);
+    arduino.valuesToSend[8] = (int)blue(c);
+    arduino.sendValues();
   }
   void setZone3Colour(color c) {
     ledColour[2] = c;
-    arduinoSend.valuesToSend[2] = LED;
-    arduinoSend.valuesToSend[9] = (int)red(c);
-    arduinoSend.valuesToSend[10] = (int)green(c);
-    arduinoSend.valuesToSend[11] = (int)blue(c);
-    arduinoSend.sendValues();
+    arduino.valuesToSend[2] = LED;
+    arduino.valuesToSend[9] = (int)red(c);
+    arduino.valuesToSend[10] = (int)green(c);
+    arduino.valuesToSend[11] = (int)blue(c);
+    arduino.sendValues();
   }
   void setZone4Colour(color c) {
     ledColour[3] = c;
-    arduinoSend.valuesToSend[2] = LED;
-    arduinoSend.valuesToSend[12] = (int)red(c);
-    arduinoSend.valuesToSend[13] = (int)green(c);
-    arduinoSend.valuesToSend[14] = (int)blue(c);
-    arduinoSend.sendValues();
+    arduino.valuesToSend[2] = LED;
+    arduino.valuesToSend[12] = (int)red(c);
+    arduino.valuesToSend[13] = (int)green(c);
+    arduino.valuesToSend[14] = (int)blue(c);
+    arduino.sendValues();
   }
   void setZone5Colour(color c) {
     ledColour[4] = c;
-    arduinoSend.valuesToSend[2] = LED;
-    arduinoSend.valuesToSend[15] = (int)red(c);
-    arduinoSend.valuesToSend[16] = (int)green(c);
-    arduinoSend.valuesToSend[17] = (int)blue(c);
-    arduinoSend.sendValues();
+    arduino.valuesToSend[2] = LED;
+    arduino.valuesToSend[15] = (int)red(c);
+    arduino.valuesToSend[16] = (int)green(c);
+    arduino.valuesToSend[17] = (int)blue(c);
+    arduino.sendValues();
   }
   void setZone6Colour(color c) {
     ledColour[5] = c;
-    arduinoSend.valuesToSend[2] = LED;
-    arduinoSend.valuesToSend[18] = (int)red(c);
-    arduinoSend.valuesToSend[19] = (int)green(c);
-    arduinoSend.valuesToSend[20] = (int)blue(c);
-    arduinoSend.sendValues();
+    arduino.valuesToSend[2] = LED;
+    arduino.valuesToSend[18] = (int)red(c);
+    arduino.valuesToSend[19] = (int)green(c);
+    arduino.valuesToSend[20] = (int)blue(c);
+    arduino.sendValues();
   }
 
   void draw()

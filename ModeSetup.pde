@@ -102,11 +102,14 @@ class ModeSetup extends Mode
     cp5.getController("dispenseMaltesers").setValue(dispenseMaltesers);
     cp5.getController("airBlast").setValue(airBlast);
 
-    arduinoSend.valuesToSend[3] = timeOut;
-    arduinoSend.valuesToSend[4] = touchSensitivity;
-    arduinoSend.valuesToSend[5] = dispenseMaltesers;
-    arduinoSend.valuesToSend[6] = airBlast;
-    arduinoSend.sendValues();
+    arduino.valuesToSend[0] = M;
+    arduino.valuesToSend[1] = P;
+    arduino.valuesToSend[2] = 3;
+    arduino.valuesToSend[3] = timeOut;
+    arduino.valuesToSend[4] = touchSensitivity;
+    arduino.valuesToSend[5] = dispenseMaltesers;
+    arduino.valuesToSend[6] = airBlast;
+    arduino.sendValues();
 
     for (int i = 0; i < num_led_zones; i++) {
       ColorWheel cw = (ColorWheel)cp5.getController("ledZone"+str(1+i));
