@@ -9,7 +9,7 @@ static final int CHOOSE = 3;
 
 static final int TEST = 0;
 static final int SETUP = 1;
-static final int FEEDBACK = 2;
+//static final int FEEDBACK = 2;
 
 int mode = CHOOSE;
 
@@ -97,27 +97,21 @@ public void controlEvent(ControlEvent theEvent) {
 
       //----------------- FEEDBACK MODE
       if (name.equals("ledZone1")) {
-        arduino.valuesToSend[2] = LED;
         ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
         modeFeedback.setZone1Colour(cp5.get(ColorWheel.class, "ledZone1").getRGB());
       } else if (name.equals("ledZone2")) {
-        arduino.valuesToSend[2] = LED;
         ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
         modeFeedback.setZone2Colour(cp5.get(ColorWheel.class, "ledZone2").getRGB());
       } else if (name.equals("ledZone3")) {
-        arduino.valuesToSend[2] = LED;
         ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
         modeFeedback.setZone3Colour(cp5.get(ColorWheel.class, "ledZone3").getRGB());
       } else if (name.equals("ledZone4")) {
-        arduino.valuesToSend[2] = LED;
         ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
         modeFeedback.setZone4Colour(cp5.get(ColorWheel.class, "ledZone4").getRGB());
       } else if (name.equals("ledZone5")) {
-        arduino.valuesToSend[2] = LED;
         ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
         modeFeedback.setZone5Colour(cp5.get(ColorWheel.class, "ledZone5").getRGB());
       } else if (name.equals("ledZone6")) {
-        arduino.valuesToSend[2] = LED;
         ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
         modeFeedback.setZone6Colour(cp5.get(ColorWheel.class, "ledZone6").getRGB());
       }
@@ -135,6 +129,7 @@ public void controlEvent(ControlEvent theEvent) {
         for (int i = 0; i < 7; i++) {
           if (i == 0) arduino.valuesToSend[0] = M;
           else if (i == 1) arduino.valuesToSend[1] = P;
+          else if (i == 2) arduino.valuesToSend[2] = STOP;
           else arduino.valuesToSend[i] = 0;
         }
         arduino.sendValues();
@@ -157,7 +152,7 @@ public void controlEvent(ControlEvent theEvent) {
         cp5.getTab("feedback").setActive(true);
         cp5.getTab("feedback").setOpen(true);
 
-        arduino.valuesToSend[2] = 1;
+        arduino.valuesToSend[2] = RUN;
         arduino.sendValues();
       }
 
@@ -173,11 +168,14 @@ public void controlEvent(ControlEvent theEvent) {
       } else if (name.equals("SetNewValues")) {
         arduino.valuesToSend[0] = M;
         arduino.valuesToSend[1] = P;
-        arduino.valuesToSend[2] = 3;
+        arduino.valuesToSend[2] = SETTINGS;
         arduino.sendValues();
       } else if (name.equals("DefaultValues")) {
         ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
         modeSetup.init();
+      } else if (name.equals("SelfTest")) {
+        ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
+        modeSetup.runSelfTest();
       }
     }
   }

@@ -20,7 +20,7 @@ class ModeFeedback extends Mode
 
   void setZone1Colour(color c) {
     ledColour[0] = c;
-    arduino.valuesToSend[2] = LED;
+    arduino.valuesToSend[2] = SET_COLOURS;
     arduino.valuesToSend[3] = (int)red(c);
     arduino.valuesToSend[4] = (int)green(c);
     arduino.valuesToSend[5] = (int)blue(c);
@@ -28,7 +28,7 @@ class ModeFeedback extends Mode
   }
   void setZone2Colour(color c) {
     ledColour[1] = c;    
-    arduino.valuesToSend[2] = LED;
+    arduino.valuesToSend[2] = SET_COLOURS;
     arduino.valuesToSend[6] = (int)red(c);
     arduino.valuesToSend[7] = (int)green(c);
     arduino.valuesToSend[8] = (int)blue(c);
@@ -36,7 +36,7 @@ class ModeFeedback extends Mode
   }
   void setZone3Colour(color c) {
     ledColour[2] = c;
-    arduino.valuesToSend[2] = LED;
+    arduino.valuesToSend[2] = SET_COLOURS;
     arduino.valuesToSend[9] = (int)red(c);
     arduino.valuesToSend[10] = (int)green(c);
     arduino.valuesToSend[11] = (int)blue(c);
@@ -44,7 +44,7 @@ class ModeFeedback extends Mode
   }
   void setZone4Colour(color c) {
     ledColour[3] = c;
-    arduino.valuesToSend[2] = LED;
+    arduino.valuesToSend[2] = SET_COLOURS;
     arduino.valuesToSend[12] = (int)red(c);
     arduino.valuesToSend[13] = (int)green(c);
     arduino.valuesToSend[14] = (int)blue(c);
@@ -52,7 +52,7 @@ class ModeFeedback extends Mode
   }
   void setZone5Colour(color c) {
     ledColour[4] = c;
-    arduino.valuesToSend[2] = LED;
+    arduino.valuesToSend[2] = SET_COLOURS;
     arduino.valuesToSend[15] = (int)red(c);
     arduino.valuesToSend[16] = (int)green(c);
     arduino.valuesToSend[17] = (int)blue(c);
@@ -60,7 +60,7 @@ class ModeFeedback extends Mode
   }
   void setZone6Colour(color c) {
     ledColour[5] = c;
-    arduino.valuesToSend[2] = LED;
+    arduino.valuesToSend[2] = SET_COLOURS;
     arduino.valuesToSend[18] = (int)red(c);
     arduino.valuesToSend[19] = (int)green(c);
     arduino.valuesToSend[20] = (int)blue(c);

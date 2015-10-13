@@ -79,6 +79,12 @@ class ModeSetup extends Mode
       .setSize(180, 39)
       ;
 
+    cp5.addButton("SelfTest")
+      .setValue(0)
+      .setPosition(width-200, 590)
+      .setSize(180, 79)
+      ;
+
     for (int i = 0; i < num_led_zones; i++) {
       cp5.getController("ledZone"+str(1+i)).moveTo("setup");
     }
@@ -89,8 +95,10 @@ class ModeSetup extends Mode
     cp5.getController("airBlast").moveTo("setup");
     cp5.getController("DefaultValues").moveTo("setup");
     cp5.getController("SetNewValues").moveTo("setup");
+    cp5.getController("SelfTest").moveTo("setup");
   }
 
+  //----------------------------------------------
   void init() {
     timeOut = 10;
     touchSensitivity = 200;
@@ -104,7 +112,7 @@ class ModeSetup extends Mode
 
     arduino.valuesToSend[0] = M;
     arduino.valuesToSend[1] = P;
-    arduino.valuesToSend[2] = 3;
+    arduino.valuesToSend[2] = SETTINGS;
     arduino.valuesToSend[3] = timeOut;
     arduino.valuesToSend[4] = touchSensitivity;
     arduino.valuesToSend[5] = dispenseMaltesers;
@@ -116,16 +124,27 @@ class ModeSetup extends Mode
       cw.setRGB(color(random(255), random(255), random(255)));
     }
   }
+  
+  //----------------------------------------------
+  void runSelfTest() {
+    arduino.valuesToSend[0] = M;
+    arduino.valuesToSend[1] = P;
+    arduino.valuesToSend[2] = SELF_TEST;
+    arduino.sendValues();
+  }
 
+  //----------------------------------------------
   void setup() {
   }
 
+  //----------------------------------------------
   void draw()
   {
     int prompt = testList.get( currentTestIndex ).promptList.get( currentPromptIndex );
     background( 255 );
   }
 
+  //----------------------------------------------
   void mousePressed()
   {
   }
