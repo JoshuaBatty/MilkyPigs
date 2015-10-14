@@ -45,6 +45,7 @@ Boolean bSendFeedback = false;
 String buttonPressed = "";
 String testDuration = "";
 String PigName = "";
+int testNumber = 0;
 int timer = -3000;
 
 //SETUP
@@ -52,6 +53,7 @@ int timer = -3000;
 void setup()
 {
   size( 1024, 768 );
+// fullScreen();
   background( 255 );
   ellipseMode( CENTER );
   rectMode( CENTER );
@@ -137,6 +139,7 @@ public void controlEvent(ControlEvent theEvent) {
 
       //----------------- TEST MODE
       if (name.equals("Test1")) {
+        testNumber = 1;
         ModeTest modeTest = (ModeTest)modes.get(mode);
         modeTest.setTestMode(1);
         ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
@@ -145,6 +148,7 @@ public void controlEvent(ControlEvent theEvent) {
           modeSetup.setWheelColour(i, int(colours[i]));
         }
       } else if (name.equals("Test2")) {
+        testNumber = 2;
         ModeTest modeTest = (ModeTest)modes.get(mode);
         modeTest.setTestMode(2);
         ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
@@ -153,6 +157,7 @@ public void controlEvent(ControlEvent theEvent) {
           modeSetup.setWheelColour(i, int(colours[i]));
         }
       } else if (name.equals("Test3")) {
+        testNumber = 3;
         ModeTest modeTest = (ModeTest)modes.get(mode);
         modeTest.setTestMode(3);
         ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
@@ -322,22 +327,6 @@ void initOutput()
     outTable.addColumn("Zone" + (i) +"GreenColour");
     outTable.addColumn("Zone" + (i) +"BlueColour");
   }
-
-  //outTable = new Table();
-  //outTable.addColumn("id");
-  //outTable.addColumn("name");
-  //outTable.addColumn("start date");
-  //outTable.addColumn("start time");
-  //outTable.addColumn("end time");
-  //outTable.addColumn("total time (ms)");
-  //outTable.addColumn("num prompts");
-
-  //for ( int i = 1; i <= 30; i++ )
-  //{
-  //  outTable.addColumn("prompt " + i );
-  //  outTable.addColumn("response " + i );
-  //  outTable.addColumn("latency " + i );
-  //}
 }
 
 
@@ -347,12 +336,11 @@ void writeResults()
   {
     TableRow row = outTable.addRow();
     row.setString( 0, name );
-    row.setString( 1, result.name );
-    row.setString( 2, result.startDate );
-    row.setString( 3, result.startTime );
-    row.setString( 4, result.endTime );
-    row.setInt( 5, result.totalMillis );
-    row.setInt( 6, result.numPrompts );
+    row.setString( 1, result.startDate );
+    row.setString( 2, result.startTime );
+    row.setString( 3, result.endTime );
+    row.setInt( 4, testNumber );
+    row.setInt( 5, result.numPrompts );
 
     for ( int i = 0; i < result.responseList.size (); i++ )
     {
