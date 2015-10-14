@@ -86,12 +86,12 @@ class ModeFeedback extends Mode
     image(pig, (width/2)-180, height/2, 360, 240);
     
     //draw chocolate
-    if(buttonPressed == "1"){
+    if(buttonPressed.equals("1")) {
        image(chocolate, 50, height/2, 240, 150);
     }
   
     //draw gun
-    else if (buttonPressed == "3") {
+    else if (buttonPressed.equals("3")) {
       image(gun, (width/1.2)-120, height/2, 240, 150);
     }
   }

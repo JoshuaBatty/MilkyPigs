@@ -40,10 +40,11 @@ ControlP5 guiKill;
 Arduino arduino;
 
 Boolean init = false;
+Boolean bSendFeedback = false;
 
-String buttonPressed;
-String testDuration;
-int timer;
+String buttonPressed = "";
+String testDuration = "";
+int timer = -3000;
 
 //SETUP
 //--------------------------------------
@@ -239,9 +240,21 @@ void init() {
 //DRAW
 void draw()
 {
-  // Wait for 3 seconds and then reset test
-  if (millis() - timer < 3000) {
-    init();
+
+  if (bSendFeedback == true) {
+    ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
+    ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
+    modeFeedback.sendFeedback(modeSetup.dispenseMaltesers, modeSetup.airBlast, 1);
+    timer = millis();
+    bSendFeedback = false;
+  }
+
+  if (buttonPressed.equals("1") || buttonPressed.equals("3")) {
+    int ellapsedTime = millis() - timer;
+    // Wait for 3 seconds and then reset test
+    if (ellapsedTime > 3000) {
+      init();
+    }
   }
 
   modes.get(mode).draw();
@@ -350,10 +363,7 @@ void serialEvent( Serial arduinoPort) {
       println("buttonPressed = " + buttonPressed);
       println("testDuration = " + testDuration);
 
-      ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
-      ModeSetup modeSetup = (ModeSetup)modes.get(FEEDBACK);
-      modeFeedback.sendFeedback(modeSetup.dispenseMaltesers,modeSetup.airBlast,1);
-      timer = millis();
+      bSendFeedback = true;
     }
   }
 }
