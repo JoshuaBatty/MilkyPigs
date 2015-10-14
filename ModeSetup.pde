@@ -3,8 +3,8 @@ class ModeSetup extends Mode
 {
   int timeOut = 10;
   int touchSensitivity = 200;
-  int dispenseMaltesers = 0;
-  int airBlast = 0;
+  int dispenseMaltesers = 1;
+  int airBlast = 1;
 
   int num_led_zones = 6;
 
@@ -72,7 +72,7 @@ class ModeSetup extends Mode
 
     cp5.addSlider("dispenseMaltesers")
       .setPosition((width/2)-(sliderWidth/2), yOffset+360)
-      .setRange(0, 255)
+      .setRange(0, 10)
       .setSize(sliderWidth, sliderHeight)
       .setValue(dispenseMaltesers)
       .setColorValue(255)
@@ -83,7 +83,7 @@ class ModeSetup extends Mode
 
     cp5.addSlider("airBlast")
       .setPosition((width/2)-(sliderWidth/2), yOffset+360)
-      .setRange(0, 255)
+      .setRange(0, 10)
       .setSize(sliderWidth, sliderHeight)
       .setValue(airBlast)
       .setColorValue(255)

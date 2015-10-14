@@ -264,9 +264,6 @@ void draw()
   modes.get(mode).draw();
 }
 
-//--------------------------------------
-void saveResult() {
-}
 
 //--------------------------------------
 //TOUCHES (clicks)
@@ -307,20 +304,40 @@ void loadInput()
 void initOutput()
 {
   outTable = new Table();
-  outTable.addColumn("id");
-  outTable.addColumn("name");
+  outTable.addColumn("id/name");
   outTable.addColumn("start date");
   outTable.addColumn("start time");
   outTable.addColumn("end time");
-  outTable.addColumn("total time (ms)");
-  outTable.addColumn("num prompts");
+  outTable.addColumn("test number");
+  outTable.addColumn("pad pressed");
+  outTable.addColumn("response time");
+  outTable.addColumn("time out");
+  outTable.addColumn("touch sensitivity");
+  outTable.addColumn("dispense maltesers");
+  outTable.addColumn("air blast");
 
-  for ( int i = 1; i <= 30; i++ )
+  for ( int i = 1; i <= 6; i++ )
   {
-    outTable.addColumn("prompt " + i );
-    outTable.addColumn("response " + i );
-    outTable.addColumn("latency " + i );
+    outTable.addColumn("Zone" + (i) +"RedColour");
+    outTable.addColumn("Zone" + (i) +"GreenColour");
+    outTable.addColumn("Zone" + (i) +"BlueColour");
   }
+
+  //outTable = new Table();
+  //outTable.addColumn("id");
+  //outTable.addColumn("name");
+  //outTable.addColumn("start date");
+  //outTable.addColumn("start time");
+  //outTable.addColumn("end time");
+  //outTable.addColumn("total time (ms)");
+  //outTable.addColumn("num prompts");
+
+  //for ( int i = 1; i <= 30; i++ )
+  //{
+  //  outTable.addColumn("prompt " + i );
+  //  outTable.addColumn("response " + i );
+  //  outTable.addColumn("latency " + i );
+  //}
 }
 
 
@@ -329,7 +346,7 @@ void writeResults()
   for ( TestResult result : resultList )
   {
     TableRow row = outTable.addRow();
-    row.setString( 0, result.id );
+    row.setString( 0, name );
     row.setString( 1, result.name );
     row.setString( 2, result.startDate );
     row.setString( 3, result.startTime );
@@ -343,6 +360,22 @@ void writeResults()
       row.setString( i * 3 + 8, result.responseList.get( i ).response ); 
       row.setInt( i * 3 + 9, result.responseList.get( i ).latency );
     }
+
+    //TableRow row = outTable.addRow();
+    //row.setString( 0, result.id );
+    //row.setString( 1, result.name );
+    //row.setString( 2, result.startDate );
+    //row.setString( 3, result.startTime );
+    //row.setString( 4, result.endTime );
+    //row.setInt( 5, result.totalMillis );
+    //row.setInt( 6, result.numPrompts );
+
+    //for ( int i = 0; i < result.responseList.size (); i++ )
+    //{
+    //  row.setInt( i * 3 + 7, result.responseList.get( i ).prompt );
+    //  row.setString( i * 3 + 8, result.responseList.get( i ).response ); 
+    //  row.setInt( i * 3 + 9, result.responseList.get( i ).latency );
+    //}
   }
   saveTable( outTable, filename );
 }

@@ -60,9 +60,9 @@ class ModeFeedback extends Mode
     arduino.valuesToSend[0] = M;
     arduino.valuesToSend[1] = P;
     arduino.valuesToSend[2] = FEEDBACK;
-    arduino.valuesToSend[3] = numMaltesers;
-    arduino.valuesToSend[4] = airBlastDuration;
-    arduino.valuesToSend[5] = bPlaySound;
+    arduino.valuesToSend[3] = numMaltesers; // = 0.0
+    arduino.valuesToSend[4] = airBlastDuration; // = 0.0
+    arduino.valuesToSend[5] = bPlaySound; // = 1
     arduino.sendValues();
   }
 

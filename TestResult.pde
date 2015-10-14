@@ -8,10 +8,6 @@ class TestResult
 
   // Which button is pressed? 
   
-  // Josh
-  String buttonPressed;
-  String testDuration;
-  
   //results
   String startDate;
   String startTime;

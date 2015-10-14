@@ -3,8 +3,8 @@
 class PromptResponse
 {
   int prompt;
-  String response;
   int latency;
+  String response;
 
   //constructor
   PromptResponse(int p, String r, int l)
@@ -14,4 +14,3 @@ class PromptResponse
     latency = l;
   }
 }
-
