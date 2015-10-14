@@ -15,9 +15,12 @@ class ModeFeedback extends Mode
       .setId(2)
       ;
   }
+  
+  //------------------------------------------------------------------------
   void setup() {
   }
 
+  //------------------------------------------------------------------------
   void setZone1Colour(color c) {
     ledColour[0] = c;
   }
@@ -37,6 +40,7 @@ class ModeFeedback extends Mode
     ledColour[5] = c;
   }
 
+  //------------------------------------------------------------------------
   void uploadLedColours() {
     arduino.valuesToSend[0] = M;
     arduino.valuesToSend[1] = P;
@@ -50,7 +54,19 @@ class ModeFeedback extends Mode
     }
     arduino.sendValues();
   }
+  
+  //------------------------------------------------------------------------
+  void sendFeedback(int numMaltesers, int airBlastDuration, int bPlaySound){
+    arduino.valuesToSend[0] = M;
+    arduino.valuesToSend[1] = P;
+    arduino.valuesToSend[2] = FEEDBACK;
+    arduino.valuesToSend[3] = numMaltesers;
+    arduino.valuesToSend[4] = airBlastDuration;
+    arduino.valuesToSend[5] = bPlaySound;
+    arduino.sendValues();
+  }
 
+  //------------------------------------------------------------------------
   void draw()
   {
     background( 255 );
@@ -68,23 +84,24 @@ class ModeFeedback extends Mode
 
     //draw pig
     image(pig, (width/2)-180, height/2, 360, 240);
-
-    //draw gun
-    if (frameCount % 5 == 0) {
-      image(gun, (width/1.2)-120, height/2, 240, 150);
-    }
-
+    
     //draw chocolate
-    if (frameCount % 5 == 0) {
-      // image(chocolate, 50, height/2, 240, 150);
+    if(buttonPressed == "1"){
+       image(chocolate, 50, height/2, 240, 150);
+    }
+  
+    //draw gun
+    else if (buttonPressed == "3") {
+      image(gun, (width/1.2)-120, height/2, 240, 150);
     }
   }
 
+  //------------------------------------------------------------------------
   void mousePressed()
   {
   }
 
-
+  //------------------------------------------------------------------------
   void keyPressed()
   { 
     if ( key == 'q' || key == ESC )

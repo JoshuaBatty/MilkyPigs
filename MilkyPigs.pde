@@ -40,10 +40,10 @@ ControlP5 guiKill;
 Arduino arduino;
 
 Boolean init = false;
-Boolean bReset = false; // This is used to trigger init() on the main thread in draw();
 
 String buttonPressed;
 String testDuration;
+int timer;
 
 //SETUP
 //--------------------------------------
@@ -231,16 +231,17 @@ void init() {
 
   ModeTest modeTest = (ModeTest)modes.get(mode);
   modeTest.setTestMode(0);
+
+  buttonPressed = "";
 }
 
 //--------------------------------------
 //DRAW
 void draw()
 {
-  // If serialEvent is called on another thread
-  if (bReset == true) {
+  // Wait for 3 seconds and then reset test
+  if (millis() - timer < 3000) {
     init();
-    bReset = false;
   }
 
   modes.get(mode).draw();
@@ -334,13 +335,11 @@ void serialEvent( Serial arduinoPort) {
   println("Receiving data");
   while (arduinoPort.available () > 0) { //as long as there is data coming from serial port, read it and store it
     serial = arduinoPort.readStringUntil(10);
-    //println(serial);
   }  
   if (serial != null) { // if the string is not empty, print the following
     String[] a = split(serial, ','); // a new array (called 'a') that stores values into seperate cells (seperated by commas specified in your Arduino program)
 
     if (a[0].equals("MP")) {
-      println("WTF");
       println("a[0] = " + a[0]);
       println("a[1] = " + a[1]);
       println("a[2] = " + a[2]);
@@ -350,8 +349,11 @@ void serialEvent( Serial arduinoPort) {
 
       println("buttonPressed = " + buttonPressed);
       println("testDuration = " + testDuration);
-      bReset = true;
-      //      println("reset = " + bReset);
+
+      ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
+      ModeSetup modeSetup = (ModeSetup)modes.get(FEEDBACK);
+      modeFeedback.sendFeedback(modeSetup.dispenseMaltesers,modeSetup.airBlast,1);
+      timer = millis();
     }
   }
 }
