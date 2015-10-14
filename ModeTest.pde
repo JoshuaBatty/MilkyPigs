@@ -63,6 +63,15 @@ class ModeTest extends Mode
       .getCaptionLabel().align(CENTER, CENTER)
       ;
 
+    cp5.addTextfield("PigID")
+      .setPosition((width/2)-padding, height/2+80)
+      .setSize(200, 39)
+      .setFont(createFont("arial", 20))
+      .setColor(color(255, 0, 0))
+      .setColorBackground(color(255, 255, 0))
+      .setAutoClear(false)
+      ;
+
     PImage[] imgs = {loadImage("StartTestButton_off.jpg"), loadImage("StartTestButton_over.jpg"), loadImage("StartTestButton_clicked.jpg")};
     cp5.addButton("StartTest")
       .setValue(0)
@@ -81,6 +90,7 @@ class ModeTest extends Mode
     cp5.getController("MiddlePad").moveTo("default");
     cp5.getController("RightPad").moveTo("default");
 
+    cp5.getController("PigID").moveTo("default");
     cp5.getController("StartTest").moveTo("default");
   }
 

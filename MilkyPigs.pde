@@ -44,6 +44,7 @@ Boolean bSendFeedback = false;
 
 String buttonPressed = "";
 String testDuration = "";
+String PigName = "";
 int timer = -3000;
 
 //SETUP
@@ -159,6 +160,8 @@ public void controlEvent(ControlEvent theEvent) {
         for (int i =0; i<colours.length; i++) {
           modeSetup.setWheelColour(i, int(colours[i]));
         }
+      } else if (name.equals("PigID")) {
+        PigName = cp5.get(Textfield.class, "PigID").getText();
       }
       if (name.equals("StartTest")) {
         mode = FEEDBACK;
@@ -234,13 +237,14 @@ void init() {
   modeTest.setTestMode(0);
 
   buttonPressed = "";
+  PigName = "";
+  cp5.get(Textfield.class, "PigID").clear();
 }
 
 //--------------------------------------
 //DRAW
 void draw()
 {
-
   if (bSendFeedback == true) {
     ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
     ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
@@ -250,15 +254,18 @@ void draw()
   }
 
   if (buttonPressed.equals("1") || buttonPressed.equals("3")) {
-    int ellapsedTime = millis() - timer;
     // Wait for 3 seconds and then reset test
+    int ellapsedTime = millis() - timer;
     if (ellapsedTime > 3000) {
       init();
     }
   }
 
   modes.get(mode).draw();
-  // background(cp5.get(ColorWheel.class, "ledZone1").getRGB());
+}
+
+//--------------------------------------
+void saveResult() {
 }
 
 //--------------------------------------
