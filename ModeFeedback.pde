@@ -20,51 +20,34 @@ class ModeFeedback extends Mode
 
   void setZone1Colour(color c) {
     ledColour[0] = c;
-    arduino.valuesToSend[2] = SET_COLOURS;
-    arduino.valuesToSend[3] = (int)red(c);
-    arduino.valuesToSend[4] = (int)green(c);
-    arduino.valuesToSend[5] = (int)blue(c);
-    arduino.sendValues();
   }
   void setZone2Colour(color c) {
     ledColour[1] = c;    
-    arduino.valuesToSend[2] = SET_COLOURS;
-    arduino.valuesToSend[6] = (int)red(c);
-    arduino.valuesToSend[7] = (int)green(c);
-    arduino.valuesToSend[8] = (int)blue(c);
-    arduino.sendValues();
   }
   void setZone3Colour(color c) {
     ledColour[2] = c;
-    arduino.valuesToSend[2] = SET_COLOURS;
-    arduino.valuesToSend[9] = (int)red(c);
-    arduino.valuesToSend[10] = (int)green(c);
-    arduino.valuesToSend[11] = (int)blue(c);
-    arduino.sendValues();
   }
   void setZone4Colour(color c) {
     ledColour[3] = c;
-    arduino.valuesToSend[2] = SET_COLOURS;
-    arduino.valuesToSend[12] = (int)red(c);
-    arduino.valuesToSend[13] = (int)green(c);
-    arduino.valuesToSend[14] = (int)blue(c);
-    arduino.sendValues();
   }
   void setZone5Colour(color c) {
     ledColour[4] = c;
-    arduino.valuesToSend[2] = SET_COLOURS;
-    arduino.valuesToSend[15] = (int)red(c);
-    arduino.valuesToSend[16] = (int)green(c);
-    arduino.valuesToSend[17] = (int)blue(c);
-    arduino.sendValues();
   }
   void setZone6Colour(color c) {
     ledColour[5] = c;
+  }
+
+  void uploadLedColours() {
+    arduino.valuesToSend[0] = M;
+    arduino.valuesToSend[1] = P;
     arduino.valuesToSend[2] = SET_COLOURS;
-    arduino.valuesToSend[18] = (int)red(c);
-    arduino.valuesToSend[19] = (int)green(c);
-    arduino.valuesToSend[20] = (int)blue(c);
-    arduino.sendValues();
+    for (int i = 0; i < 6; i++) {
+      for (int j = 0; j < 3; j++) {
+        if ( j == 0) arduino.valuesToSend[3+(i*3)] = (int)red(ledColour[i]);  
+        else if ( j == 1) arduino.valuesToSend[4+(i*3)] = (int)green(ledColour[i]);  
+        else if ( j == 2) arduino.valuesToSend[5+(i*3)] = (int)blue(ledColour[i]);
+      }
+    }
   }
 
   void draw()

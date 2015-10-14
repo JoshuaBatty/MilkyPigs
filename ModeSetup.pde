@@ -160,6 +160,18 @@ class ModeSetup extends Mode
   }
 
   //----------------------------------------------
+  void setNewValues() {
+    arduino.valuesToSend[0] = M;
+    arduino.valuesToSend[1] = P;
+    arduino.valuesToSend[2] = SETTINGS;
+    arduino.valuesToSend[3] = timeOut;
+    arduino.valuesToSend[4] = touchSensitivity;
+    arduino.valuesToSend[5] = dispenseMaltesers;
+    arduino.valuesToSend[6] = airBlast;
+    arduino.sendValues();
+  }
+
+  //----------------------------------------------
   void setup() {
   }
 

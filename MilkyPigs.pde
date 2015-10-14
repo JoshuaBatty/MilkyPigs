@@ -139,7 +139,6 @@ public void controlEvent(ControlEvent theEvent) {
       if (name.equals("Test1")) {
         ModeTest modeTest = (ModeTest)modes.get(mode);
         modeTest.setTestMode(1);
-
         ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
         String[] colours = loadStrings("data/ColourPalettes/test1Colours.txt");
         for (int i =0; i<colours.length; i++) {
@@ -148,7 +147,6 @@ public void controlEvent(ControlEvent theEvent) {
       } else if (name.equals("Test2")) {
         ModeTest modeTest = (ModeTest)modes.get(mode);
         modeTest.setTestMode(2);
-
         ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
         String[] colours = loadStrings("data/ColourPalettes/test2Colours.txt");
         for (int i =0; i<colours.length; i++) {
@@ -157,7 +155,6 @@ public void controlEvent(ControlEvent theEvent) {
       } else if (name.equals("Test3")) {
         ModeTest modeTest = (ModeTest)modes.get(mode);
         modeTest.setTestMode(3);
-
         ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
         String[] colours = loadStrings("data/ColourPalettes/test3Colours.txt");
         for (int i =0; i<colours.length; i++) {
@@ -170,24 +167,35 @@ public void controlEvent(ControlEvent theEvent) {
         cp5.getTab("feedback").setActive(true);
         cp5.getTab("feedback").setOpen(true);
 
+        // Upload the LED colours first 
+        ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
+        modeFeedback.uploadLedColours();
+
+        // Then Put into start test mode
+        arduino.valuesToSend[0] = M;
+        arduino.valuesToSend[0] = P;
         arduino.valuesToSend[2] = RUN;
         arduino.sendValues();
       }
 
       //----------------- SETUP MODE
       if (name.equals("timeOut")) {
-        arduino.valuesToSend[3] = (int)control.getValue();
+        ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
+        modeSetup.timeOut = (int)control.getValue();
       } else if (name.equals("touchSensitivity")) {
-        arduino.valuesToSend[4] = (int)control.getValue();
+        ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
+        modeSetup.touchSensitivity = (int)control.getValue();
       } else if (name.equals("dispenseMaltesers")) {
-        arduino.valuesToSend[5] = (int)control.getValue();
+        ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
+        modeSetup.dispenseMaltesers = (int)control.getValue();
       } else if (name.equals("airBlast")) {
-        arduino.valuesToSend[6] = (int)control.getValue();
+        ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
+        modeSetup.airBlast = (int)control.getValue();
       } else if (name.equals("SetNewValues")) {
-        arduino.valuesToSend[0] = M;
-        arduino.valuesToSend[1] = P;
-        arduino.valuesToSend[2] = SETTINGS;
-        arduino.sendValues();
+        ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
+        modeSetup.setNewValues();
+        ModeFeedback modeFeedback = (ModeFeedback)modes.get(FEEDBACK);
+        modeFeedback.uploadLedColours();
       } else if (name.equals("DefaultValues")) {
         ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
         modeSetup.init();
