@@ -1,5 +1,7 @@
 class ModeTest extends Mode
 {
+  int pad1, pad2, pad3 = 0;
+
   ModeTest() {
     int padding = 100;
     int buttonWidth = 180;
@@ -88,36 +90,42 @@ class ModeTest extends Mode
   void setTestMode(int testMode) {
     arduino.valuesToSend[0] = M;
     arduino.valuesToSend[1] = P;
-    
+
     if (testMode == 0) {
       cp5.getController("LeftPad").setValue(0);  
       cp5.getController("MiddlePad").setValue(0);  
       cp5.getController("RightPad").setValue(0);
-      arduino.valuesToSend[3] = 0;
-      arduino.valuesToSend[4] = 0;
-      arduino.valuesToSend[5] = 0;
+      pad1 = 0;
+      pad2 = 0;
+      pad3 = 0;
     } else if (testMode == 1) {
       cp5.getController("LeftPad").setValue(1);  
       cp5.getController("MiddlePad").setValue(0);  
       cp5.getController("RightPad").setValue(1);
-      arduino.valuesToSend[3] = 1;
-      arduino.valuesToSend[4] = 0;
-      arduino.valuesToSend[5] = 1;
+      pad1 = 1;
+      pad2 = 0;
+      pad3 = 1;
     } else if (testMode == 2) {
       cp5.getController("LeftPad").setValue(0);  
       cp5.getController("MiddlePad").setValue(1);  
       cp5.getController("RightPad").setValue(0);
-      arduino.valuesToSend[3] = 0;
-      arduino.valuesToSend[4] = 1;
-      arduino.valuesToSend[5] = 0;
+      pad1 = 0;
+      pad2 = 1;
+      pad3 = 0;
     } else if (testMode == 3) {
       cp5.getController("LeftPad").setValue(1);  
       cp5.getController("MiddlePad").setValue(1);  
       cp5.getController("RightPad").setValue(1);
-      arduino.valuesToSend[3] = 1;
-      arduino.valuesToSend[4] = 1;
-      arduino.valuesToSend[5] = 1;
+      pad1 = 1;
+      pad2 = 1;
+      pad3 = 1;
     }
+  }
+
+  void uploadPadStates() {
+    arduino.valuesToSend[3] = pad1;
+    arduino.valuesToSend[4] = pad2;
+    arduino.valuesToSend[5] = pad3;
   }
 
   void draw()

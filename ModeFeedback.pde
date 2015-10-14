@@ -22,7 +22,7 @@ class ModeFeedback extends Mode
     ledColour[0] = c;
   }
   void setZone2Colour(color c) {
-    ledColour[1] = c;    
+    ledColour[1] = c;
   }
   void setZone3Colour(color c) {
     ledColour[2] = c;
@@ -48,6 +48,7 @@ class ModeFeedback extends Mode
         else if ( j == 2) arduino.valuesToSend[5+(i*3)] = (int)blue(ledColour[i]);
       }
     }
+    arduino.sendValues();
   }
 
   void draw()

@@ -40,6 +40,7 @@ ControlP5 guiKill;
 Arduino arduino;
 
 Boolean init = false;
+Boolean bReset = false; // This is used to trigger init() on the main thread in draw();
 
 //SETUP
 //--------------------------------------
@@ -118,13 +119,7 @@ public void controlEvent(ControlEvent theEvent) {
 
       //----------------- KILL SWITCH
       if (name.equals("KillSwitch")) {
-        mode = TEST;
-        cp5.getTab("default").bringToFront();
-        cp5.getTab("default").setActive(true);
-        cp5.getTab("default").setOpen(true);
-
-        ModeTest modeTest = (ModeTest)modes.get(mode);
-        modeTest.setTestMode(0);
+        init();
 
         for (int i = 0; i < 7; i++) {
           if (i == 0) arduino.valuesToSend[0] = M;
@@ -172,9 +167,11 @@ public void controlEvent(ControlEvent theEvent) {
         modeFeedback.uploadLedColours();
 
         // Then Put into start test mode
+        ModeTest modeTest = (ModeTest)modes.get(TEST);
         arduino.valuesToSend[0] = M;
-        arduino.valuesToSend[0] = P;
+        arduino.valuesToSend[1] = P;
         arduino.valuesToSend[2] = RUN;
+        modeTest.uploadPadStates();
         arduino.sendValues();
       }
 
@@ -222,11 +219,27 @@ public void controlEvent(ControlEvent theEvent) {
   }
 }
 
+//--------------------------------------
+void init() {
+  mode = TEST;
+  cp5.getTab("default").bringToFront();
+  cp5.getTab("default").setActive(true);
+  cp5.getTab("default").setOpen(true);
+
+  ModeTest modeTest = (ModeTest)modes.get(mode);
+  modeTest.setTestMode(0);
+}
 
 //--------------------------------------
 //DRAW
 void draw()
 {
+  // If serialEvent is called on another thread
+  if(bReset == true){
+    init();
+    bReset = false;
+  }
+  
   modes.get(mode).draw();
   // background(cp5.get(ColorWheel.class, "ledZone1").getRGB());
 }
@@ -309,4 +322,31 @@ void writeResults()
   }
   saveTable( outTable, filename );
 }
+
+// Each time we see incoming data this method gets called. 
+//---------------------------------------------
+void serialEvent( Serial arduinoPort) {
+  String serial = "";
+
+  println("Receiving data");
+  while (arduinoPort.available () > 0) { //as long as there is data coming from serial port, read it and store it
+    serial = arduinoPort.readStringUntil(10);
+    println(serial);
+  }  
+  if (serial != null) { // if the string is not empty, print the following
+    String[] a = split(serial, ','); // a new array (called 'a') that stores values into seperate cells (seperated by commas specified in your Arduino program)
+
+    if (a[0] == "MP") {
+      currentTestResult.buttonPressed = a[1];
+      currentTestResult.testDuration = a[2];
+
+      println(a[0]); // This should be MP
+      println("buttonPressed = " + currentTestResult.buttonPressed);
+      println("testDuration = " + currentTestResult.testDuration);
+      bReset = true;
+    }
+  }
+}
+
+
 //--------------------------------------
