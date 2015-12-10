@@ -3,14 +3,28 @@
 class PromptResponse
 {
   int prompt;
-  int latency;
-  String response;
-
+  int testType;
+  String reactionTime;
+  int lightPosition;
+  int numLights;
+  int padPressed;
+  int numMaltesers;
+  int airBlastDuration;
+  String colour;
+  
+      
   //constructor
-  PromptResponse(int p, String r, int l)
+  PromptResponse(int prompt, int testType, String reactionTime, int lightPosition, int numLights, 
+                 int padPressed, int numMaltesers, int airBlastDuration, String colour )
   {
-    prompt = p;
-    response = r;
-    latency = l;
+    this.prompt = prompt;
+    this.testType = testType;
+    this.reactionTime = reactionTime;
+    this.lightPosition = lightPosition;
+    this.numLights = numLights;
+    this.padPressed = padPressed;
+    this.numMaltesers = numMaltesers;
+    this.airBlastDuration = airBlastDuration;
+    this.colour = colour;
   }
 }

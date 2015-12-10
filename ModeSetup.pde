@@ -5,51 +5,34 @@ class ModeSetup extends Mode
   int touchSensitivity = 200;
   int dispenseMaltesers = 1;
   int airBlast = 1;
-
-  int num_led_zones = 6;
-
-  color test1Colours[] = new color[6]; 
-  color test2Colours[] = new color[6]; 
-  color test3Colours[] = new color[6]; 
+  int pauseTestDuration = 5; // This is in seconds
 
   ModeSetup() {
     int sliderWidth = 380;
     int sliderHeight = 50;
-    int colourWheelWidth = 160;
     int yOffset = 0;
 
-    cp5.addTab("setup")
+    cp5.addTab("default")
+      .setLabel("setup")
       .setColorBackground(color(0, 160, 100))
       .setColorLabel(color(255))
       .setColorActive(color(255, 128, 0))
       .activateEvent(true)
-      .setId(1)
+      .setId(0)
       ;
 
-    cp5.addButton("Set Test 1 Colours")
-      .setValue(0)
-      .setPosition(((width/2)-90) - 200, 80)
-      .setSize(180, 39)
+    cp5.addTextfield("PigID")
+      .setPosition((width/2)-100, 140)
+      .setSize(200, 39)
+      .setFont(createFont("arial", 20))
+      .setColor(color(255, 0, 0))
+      .setColorLabel(color(0))
+      .setColorBackground(color(255, 255, 0))
+      .setAutoClear(false)
       ;
-
-    cp5.addButton("Set Test 2 Colours")
-      .setValue(0)
-      .setPosition((width/2)-90, 80)
-      .setSize(180, 39)
-      ;
-
-    cp5.addButton("Set Test 3 Colours")
-      .setValue(0)
-      .setPosition(((width/2)-90) + 200, 80)
-      .setSize(180, 39)
-      ;
-
-    for (int i = 0; i < num_led_zones; i++) {
-      cp5.addColorWheel("ledZone"+str(1+i), 30+(colourWheelWidth*i), 140, colourWheelWidth ).setRGB(color(0, 0, 255));
-    }
 
     cp5.addSlider("timeOut")
-      .setPosition((width/2)-(sliderWidth/2), yOffset+360)
+      .setPosition((width/2)-(sliderWidth/2), yOffset+220)
       .setRange(0, 255)
       .setSize(sliderWidth, sliderHeight)
       .setValue(timeOut)
@@ -60,7 +43,7 @@ class ModeSetup extends Mode
     yOffset += sliderHeight+10;
 
     cp5.addSlider("touchSensitivity")
-      .setPosition((width/2)-(sliderWidth/2), yOffset+360)
+      .setPosition((width/2)-(sliderWidth/2), yOffset+220)
       .setRange(0, 255)
       .setSize(sliderWidth, sliderHeight)
       .setValue(touchSensitivity)
@@ -70,85 +53,62 @@ class ModeSetup extends Mode
 
     yOffset += sliderHeight+10;
 
-    cp5.addSlider("dispenseMaltesers")
-      .setPosition((width/2)-(sliderWidth/2), yOffset+360)
-      .setRange(0, 10)
+    cp5.addSlider("pauseDuration")
+      .setPosition((width/2)-(sliderWidth/2), yOffset+220)
+      .setRange(0, 20)
       .setSize(sliderWidth, sliderHeight)
-      .setValue(dispenseMaltesers)
-      .setColorValue(255)
-      .setColorLabel(0)
-      ;
-
-    yOffset += sliderHeight+10;
-
-    cp5.addSlider("airBlast")
-      .setPosition((width/2)-(sliderWidth/2), yOffset+360)
-      .setRange(0, 10)
-      .setSize(sliderWidth, sliderHeight)
-      .setValue(airBlast)
+      .setValue(pauseTestDuration)
       .setColorValue(255)
       .setColorLabel(0)
       ;
 
     cp5.addButton("DefaultValues")
       .setValue(0)
-      .setPosition((width/2)-190, 630)
+      .setPosition((width/2)-190, 430)
       .setSize(180, 39)
       ;
     cp5.addButton("SetNewValues")
       .setValue(0)
-      .setPosition((width/2)+10, 630)
+      .setPosition((width/2)+10, 430)
       .setSize(180, 39)
       ;
 
     cp5.addButton("SelfTest")
       .setValue(0)
-      .setPosition(width-200, 590)
+      .setPosition(width-200, 390)
       .setSize(180, 79)
       ;
 
-    for (int i = 0; i < num_led_zones; i++) {
-      cp5.getController("ledZone"+str(1+i)).moveTo("setup");
-    }
+    PImage[] imgs = {loadImage("StartTestButton_off.jpg"), loadImage("StartTestButton_over.jpg"), loadImage("StartTestButton_clicked.jpg")};
+    cp5.addButton("StartTest")
+      .setValue(0)
+      .setPosition((width/2)-(280/2), height/2+120)
+      .setImages(imgs)
+      .setBroadcast(true)
+      .updateSize()
+      .activateBy(cp5.RELEASE)
+      ;
 
-    cp5.getController("timeOut").moveTo("setup");
-    cp5.getController("touchSensitivity").moveTo("setup");
-    cp5.getController("dispenseMaltesers").moveTo("setup");
-    cp5.getController("airBlast").moveTo("setup");
-    cp5.getController("DefaultValues").moveTo("setup");
-    cp5.getController("SetNewValues").moveTo("setup");
-    cp5.getController("SelfTest").moveTo("setup");
-    cp5.getController("Set Test 1 Colours").moveTo("setup");
-    cp5.getController("Set Test 2 Colours").moveTo("setup");
-    cp5.getController("Set Test 3 Colours").moveTo("setup");
+    cp5.getController("timeOut").moveTo("default");
+    cp5.getController("touchSensitivity").moveTo("default");
+    cp5.getController("DefaultValues").moveTo("default");
+    cp5.getController("SetNewValues").moveTo("default");
+    cp5.getController("SelfTest").moveTo("default");
+    cp5.getController("PigID").moveTo("default");
+    cp5.getController("StartTest").moveTo("default");
   }
 
   //----------------------------------------------
   void init() {
     timeOut = 10;
     touchSensitivity = 200;
-    dispenseMaltesers = 0;
-    airBlast = 0;
+    pauseTestDuration = 5;
 
     cp5.getController("timeOut").setValue(timeOut);
     cp5.getController("touchSensitivity").setValue(touchSensitivity);
-    cp5.getController("dispenseMaltesers").setValue(dispenseMaltesers);
-    cp5.getController("airBlast").setValue(airBlast);
+    cp5.getController("pauseDuration").setValue(pauseTestDuration);
 
-    arduino.valuesToSend[0] = M;
-    arduino.valuesToSend[1] = P;
-    arduino.valuesToSend[2] = SETTINGS;
-    arduino.valuesToSend[3] = timeOut;
-    arduino.valuesToSend[4] = touchSensitivity;
-    arduino.valuesToSend[5] = dispenseMaltesers;
-    arduino.valuesToSend[6] = airBlast;
-    arduino.sendValues();
-  }
-
-  //----------------------------------------------
-  void setWheelColour(int num, color colour) {
-    ColorWheel cw = (ColorWheel)cp5.getController("ledZone"+str(1+num));
-    cw.setRGB(colour);
+    setNewValues();
   }
 
   //----------------------------------------------
@@ -166,8 +126,7 @@ class ModeSetup extends Mode
     arduino.valuesToSend[2] = SETTINGS;
     arduino.valuesToSend[3] = timeOut;
     arduino.valuesToSend[4] = touchSensitivity;
-    arduino.valuesToSend[5] = dispenseMaltesers;
-    arduino.valuesToSend[6] = airBlast;
+    arduino.valuesToSend[5] = pauseTestDuration;
     arduino.sendValues();
   }
 
@@ -178,7 +137,7 @@ class ModeSetup extends Mode
   //----------------------------------------------
   void draw()
   {
-    int prompt = testList.get( currentTestIndex ).promptList.get( currentPromptIndex );
+    //int prompt = testList.get( currentTestIndex ).promptList.get( currentPromptIndex );
     background( 255 );
   }
 
@@ -188,34 +147,71 @@ class ModeSetup extends Mode
   }
 
 
-  void press( String colour )
+  //----------------------------------------------
+  void saveResponse()
   {
-    int l = millis() - startTime;
-    int p = testList.get( currentTestIndex ).promptList.get( currentPromptIndex );
-    String r = colour;
-    String correctColour = testList.get( currentTestIndex ).correctResponseList.get( currentPromptIndex );
+    int prompt = currentTestIndex;
+    int testType = testList.get( currentTestIndex ).testID;
+    String reactionTime = testDuration;
 
-    println( "response is: " + colour );
-    println( "correct response is: " + correctColour );
+    int lightPosition = testList.get( currentTestIndex ).lightPosition;
+    int numLights = testList.get( currentTestIndex ).numLights;
+    String LED_colour = testList.get( currentTestIndex ).LED_Color;
+    int padPressed = parseInt(buttonPressed); // This comes from the arduino receive class in main script
 
-    //check response against response list and play sound if required
-    //if( colour ==  correctColour || correctColour == "all" ) sound.play();
-    // if( colour.equals( correctColour ) || correctColour.equals("all") )
-    //{
-    //  println("MATCH!");
-    //  sound.play();
-    //}
+    bDrawChocolate = false;
+    bDrawGun = false;
 
-    PromptResponse response = new PromptResponse( p, r, l );
+    if (testType == 1) {
+      println("test Type = 1");
+      if (padPressed == 1) { // If the left pad was pushed
+        println("padPressed = 1");
+        dispenseMaltesers = testList.get(currentTestIndex).leftReward;
+        airBlast = 0;
+        bDrawChocolate = true;
+        bDrawGun = false;
+      } else if (padPressed == 3) { // If the right pad was pushed
+        println("padPressed = 3");
+        dispenseMaltesers = testList.get(currentTestIndex).rightReward;
+        airBlast = 0;
+        bDrawChocolate = true;
+        bDrawGun = false;
+      } else {
+        println("padPressed = 2");
+        dispenseMaltesers = 0; // If the middle pad was pushed set numMaltesers = 0;
+        airBlast = testList.get( currentTestIndex ).wrongResponse;
+        bDrawChocolate = false;
+        bDrawGun = true;
+      }
+    } else if (testType == 2) {
+      println("test Type = 2");
+      if (padPressed == 1) {
+        dispenseMaltesers = testList.get(currentTestIndex).correctResponse;
+        bDrawChocolate = true;
+        bDrawGun = false;
+        airBlast = 0;
+      } else if (padPressed == 3) {
+        airBlast = testList.get( currentTestIndex ).wrongResponse;
+        bDrawGun = true;
+        bDrawChocolate = false;
+        dispenseMaltesers = 0;
+      }
+    }
+
+
+    PromptResponse response = new PromptResponse( prompt, testType, reactionTime, lightPosition, numLights, 
+      padPressed, dispenseMaltesers, airBlast, LED_colour );
+
+    currentTestResult = new TestResult( testList.get(currentTestIndex) );
     currentTestResult.responseList.add( response );
 
+    //currentPromptIndex++;
 
-    currentPromptIndex++;
-
-    if ( currentPromptIndex < testList.get( currentTestIndex ).numPrompts )
-      mode = PAUSE;
-    else
-      endTest();
+    //if ( currentPromptIndex < testList.get( currentTestIndex ).numPrompts ) {
+    //  // mode = PAUSE;
+    //} else {
+    endTest();
+    //}
   }
 
 
@@ -232,11 +228,11 @@ class ModeSetup extends Mode
     currentTestResult.end();
     resultList.add( currentTestResult );
     println( "number of results = " + resultList.size() );
-    currentPromptIndex = 0;
-    currentTestIndex = 0;
+    // currentPromptIndex = 0;
+    // currentTestIndex = 0;
 
     //change state
     //--------------
-    mode = CHOOSE;
+    //mode = CHOOSE;
   }
 }

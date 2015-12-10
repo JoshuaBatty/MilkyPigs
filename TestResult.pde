@@ -1,11 +1,11 @@
 class TestResult
 {
   //inputs
-  String id;
+  int testID;
   String name;
-  int numPrompts;
   IntList promptList;
-
+  
+  
   // Which button is pressed? 
   
   //results
@@ -23,9 +23,8 @@ class TestResult
   //constructor
   TestResult( Test test )
   {
-    id = test.id;
+    testID = test.testID;
     name = test.name;
-    numPrompts = test.numPrompts;
     promptList = test.promptList;
 
     started = true;
@@ -33,9 +32,8 @@ class TestResult
 
     started = true;
     startDate =  day() + "/" + month() + "/" + year();
-    startTime = hour() + ":" + minute()+ ":" + second();
     startMillis = millis();
-
+    startTime = hour() + ":" + minute()+ ":" + second();
     responseList = new ArrayList<PromptResponse>();
   }
 
