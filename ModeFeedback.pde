@@ -129,6 +129,9 @@ class ModeFeedback extends Mode
       startIndex -= 1;
     }
     
+    println("Start index = " + startIndex);
+    println("End index = " + endIndex);
+    
     int count = 0;
     for (int i = 0; i < 54; i++) {
       if ( i > startIndex && i <= endIndex) {

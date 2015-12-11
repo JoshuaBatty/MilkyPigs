@@ -242,7 +242,6 @@ void nextPrompt() {
   bDrawGun = false;
 }
 
-
 //--------------------------------------
 //TOUCHES (clicks)
 void mousePressed()
@@ -281,7 +280,7 @@ void keyPressed()
 //IO HANDLING
 void loadInput()
 {
-  inTable = loadTable("input/input_josh.csv", "header");
+  inTable = loadTable("input/input.csv", "header");
 
   numTests = inTable.getRowCount();
   println(numTests + " tests found\n"); 
