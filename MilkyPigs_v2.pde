@@ -207,6 +207,9 @@ void draw() {
     int ellapsedTime = millis() - timer;
     ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
 
+  println("Ellapsed Time = " + ellapsedTime);
+  println("pause Duration = " + modeSetup.pauseTestDuration);
+  
     if (ellapsedTime > (modeSetup.pauseTestDuration*1000) && bResume == true) {
       nextPrompt();
       startTime = millis();
@@ -268,7 +271,6 @@ void keyPressed()
   {
     println("exit");
     writeResults();
-    exit();
   } else if (key == 's') {
     writeResults();
   }
