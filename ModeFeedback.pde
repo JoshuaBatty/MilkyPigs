@@ -6,6 +6,8 @@ class ModeFeedback extends Mode
   PImage chocolate = loadImage("maltesers.jpg"); 
 
   color ledColour;
+  int currentLightPostion;
+  int currentNumLights;
   
   ModeFeedback() {
     cp5.addTab("feedback")
@@ -72,8 +74,15 @@ class ModeFeedback extends Mode
   //------------------------------------------------------------------------
   void resetLedColours() {
     ledColour = color(0, 0, 0);
+    currentLightPostion = testList.get(currentTestIndex).lightPosition;
+    currentNumLights = testList.get(currentTestIndex).numLights;
     testList.get(currentTestIndex).lightPosition = 27;
     testList.get(currentTestIndex).numLights = 54;
+  }
+  //------------------------------------------------------------------------
+  void resumeLedColours() {
+    testList.get(currentTestIndex).lightPosition = currentLightPostion;
+    testList.get(currentTestIndex).numLights = currentNumLights;
   }
 
   //------------------------------------------------------------------------
@@ -128,7 +137,7 @@ class ModeFeedback extends Mode
     if (numLights %  2 > 0) {
       startIndex -= 1;
     }
-    
+
     int count = 0;
     for (int i = 0; i < 54; i++) {
       if ( i > startIndex && i <= endIndex) {

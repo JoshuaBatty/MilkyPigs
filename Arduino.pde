@@ -1,17 +1,6 @@
 import processing.serial.*;
 Serial arduinoPort;  // Create object from Serial class
 
-static final int M = 77;
-static final int P = 80;
-
-static final int STOP = 0;
-static final int RUN = 1;
-static final int FEEDBACK = 2;
-static final int SETTINGS = 3;
-static final int SELF_TEST = 4;
-static final int SET_COLOURS = 5;
-static final int PAUSE = 6;
-
 class Arduino {
 
   int[] valuesToSend = {M, P, 0, 0, 0, 0, 0, 0};

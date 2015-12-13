@@ -16,11 +16,10 @@ abstract class Mode
     currentTestResult.abort();
     resultList.add( currentTestResult );
     println( "number of results = " + resultList.size() );
-    currentPromptIndex = 0;
     currentTestIndex = 0;
 
     //change state
     //--------------
-    mode = CHOOSE;
+    mode = SETUP;
   }
 }

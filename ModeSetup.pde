@@ -3,8 +3,8 @@ class ModeSetup extends Mode
 {
   int timeOut = 10;
   int touchSensitivity = 200;
-  int dispenseMaltesers = 1;
-  int airBlast = 1;
+  int dispenseMaltesers = 0;
+  int airBlast = 0;
   int pauseTestDuration = 5; // This is in seconds
 
   ModeSetup() {

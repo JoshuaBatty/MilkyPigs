@@ -1,12 +1,18 @@
+static final int M = 77;
+static final int P = 80;
+
+static final int STOP = 0;
+static final int RUN = 1;
+static final int FEEDBACK = 2;
+static final int SETTINGS = 3;
+static final int SELF_TEST = 4;
+static final int SET_COLOURS = 5;
+static final int PAUSE = 6;
 
 //Set human readable enums for Modes
-static final int START = 0;
-static final int PROMPT = 1;
-static final int CHOOSE = 3;
-
 static final int SETUP = 0;
 
-int mode = CHOOSE;
+int mode = SETUP;
 
 ArrayList<Mode> modes = new ArrayList<Mode>();
 
@@ -16,7 +22,6 @@ int startTime;
 
 int numTests;
 int currentTestIndex;
-int currentPromptIndex;
 
 ArrayList<Test> testList = new ArrayList<Test>();
 ArrayList<TestResult> resultList = new ArrayList<TestResult>();
@@ -120,7 +125,6 @@ public void controlEvent(ControlEvent theEvent) {
       if (name.equals("KillSwitch")) {
         writeResults();
         init();
-
         for (int i = 0; i < 7; i++) {
           if (i == 0) arduino.valuesToSend[0] = M;
           else if (i == 1) arduino.valuesToSend[1] = P;
@@ -128,20 +132,21 @@ public void controlEvent(ControlEvent theEvent) {
           else arduino.valuesToSend[i] = 0;
         }
         arduino.sendValues();
+        currentTestIndex = 0;
       }
 
       //----------------- PAUSE SWITCH
       if (name.equals("PauseToggle")) {
         if ((int)control.getValue() == 1) {
           pause();
+          bDrawChocolate = false;
+          bDrawGun = false;
           // Send a Pause command to the arduino
           modeFeedback.setPauseState();
         } else if ((int)control.getValue() == 0) {
-          currentTestIndex--; // down iterate the testIndex so that the same prompt is presented as before
-          nextPrompt();
+          unpause();
         }
       }
-
 
       //----------------- SETUP MODE
       if (name.equals("PigID")) {
@@ -206,7 +211,10 @@ void draw() {
 
     int ellapsedTime = millis() - timer;
     ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
-
+    
+    println("Ellapsed Time = " + ellapsedTime);
+    println("pause Duration = " + modeSetup.pauseTestDuration);
+    
     if (ellapsedTime > (modeSetup.pauseTestDuration*1000) && bResume == true) {
       nextPrompt();
       startTime = millis();
@@ -214,13 +222,22 @@ void draw() {
   }
 
   modes.get(mode).draw();
-  
 }
 
 //--------------------------------------
 void pause() {
   ModeFeedback modeFeedback = (ModeFeedback)modes.get(RUN);
   modeFeedback.resetLedColours();
+}
+
+//--------------------------------------
+void unpause() {
+  ModeFeedback modeFeedback = (ModeFeedback)modes.get(RUN);
+  modeFeedback.setColour();
+  modeFeedback.resumeLedColours();
+  modeFeedback.uploadLedColours();
+  modeFeedback.setActivePads();
+  bResume = true;
 }
 
 //--------------------------------------
@@ -263,12 +280,11 @@ void keyPressed()
     bResume = true;
     println("RESUME DELIVERY");
   }
- 
+
   if ( key == 'q' || key == ESC )
   {
     println("exit");
     writeResults();
-    exit();
   } else if (key == 's') {
     writeResults();
   }
@@ -279,7 +295,7 @@ void keyPressed()
 //IO HANDLING
 void loadInput()
 {
-  inTable = loadTable("input/input_josh.csv", "header");
+  inTable = loadTable("input/input.csv", "header");
 
   numTests = inTable.getRowCount();
   println(numTests + " tests found\n"); 
