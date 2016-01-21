@@ -16,12 +16,12 @@ class Arduino {
     pApplet = papp;
     /*
     // Setup serial connection
-    println(Serial.list());
-    // This is going to need to be changed for the device that they are using. 
-    String portName = Serial.list()[2]; //change the 0 to a 1 or 2 etc. to match your port
-    arduinoPort = new Serial(papp, portName, 9600);
-    arduinoPort.bufferUntil('\n');
-    */
+     println(Serial.list());
+     // This is going to need to be changed for the device that they are using. 
+     String portName = Serial.list()[2]; //change the 0 to a 1 or 2 etc. to match your port
+     arduinoPort = new Serial(papp, portName, 9600);
+     arduinoPort.bufferUntil('\n');
+     */
   }
 
   //---------------------------------------------
@@ -35,6 +35,7 @@ class Arduino {
 
   //---------------------------------------------
   void update() {
+
     //So when we have chosen a Serial port but we havent yet setup the Serial connection. Do this loop
     while (Comselected == true && serialSet == false) {
       //Call the startSerial function, sending it the char array (string[]) comList

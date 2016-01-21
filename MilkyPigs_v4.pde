@@ -91,7 +91,7 @@ void setup()
 
   guiBluetooth = new ControlP5(this);
   //Make a dropdown list calle ports. Lets explain the values: ("name", left margin, top margin, width, height (84 here since the boxes have a height of 20, and theres 1 px between each item so 4 items (or scroll bar).
-  ports = guiBluetooth.addDropdownList("bluetoothList", 10, 25, 160, 284);
+  ports = guiBluetooth.addDropdownList("bluetoothList", 80, 220, 160, 284);
 
   // Arduino 
   arduino = new Arduino(this); // call the constructor of arduino

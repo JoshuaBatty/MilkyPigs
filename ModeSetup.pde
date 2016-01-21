@@ -139,6 +139,19 @@ class ModeSetup extends Mode
   {
     //int prompt = testList.get( currentTestIndex ).promptList.get( currentPromptIndex );
     background( 255 );
+    
+    // Give the user feedback on the status of the bluetooth connection. 
+    if (ports.isVisible()) {
+      fill(0);
+      textSize(12);
+      if (arduino.serialSet == true) {
+        // BLUETOOTH CONNECTED, READY TO START
+        text("BLUETOOTH CONNECTED", 80, 200);
+      } else if (arduino.Comselected == false) {
+        // SELECT A BLUETOOTH PORT
+        text("SELECT A BLUETOOTH PORT", 80, 200);
+      } 
+    }
   }
 
   //----------------------------------------------
