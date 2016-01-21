@@ -176,26 +176,43 @@ class ModeSetup extends Mode
         airBlast = 0;
         bDrawChocolate = true;
         bDrawGun = false;
-      } else {
+      } else if (padPressed == 2) {
         println("padPressed = 2");
         dispenseMaltesers = 0; // If the middle pad was pushed set numMaltesers = 0;
         airBlast = testList.get( currentTestIndex ).wrongResponse;
         bDrawChocolate = false;
         bDrawGun = true;
+      } else if (padPressed == 0) {
+        println("padPressed = 0");
+        dispenseMaltesers = 0; 
+        airBlast = 0;
+        bDrawChocolate = false;
+        bDrawGun = false;
       }
     } else if (testType == 2) {
       println("test Type = 2");
-      if (padPressed == 1) {
-        dispenseMaltesers = testList.get(currentTestIndex).correctResponse;
-        bDrawChocolate = true;
+      // If no Pad was pressed then it has timed out. 
+      if (padPressed == 0) {
+        bDrawChocolate = false;
         bDrawGun = false;
         airBlast = 0;
-      } else if (padPressed == 3) {
-        airBlast = testList.get( currentTestIndex ).wrongResponse;
-        bDrawGun = true;
-        bDrawChocolate = false;
         dispenseMaltesers = 0;
-      }
+      } 
+      // Else if we get a respnse from the middle pad then do something
+      // Ignore pads, 1 & 3
+      else if (padPressed == 2) {
+        if (testList.get(currentTestIndex).correctResponse > 0) {
+          dispenseMaltesers = testList.get(currentTestIndex).correctResponse;
+          airBlast = 0;
+          bDrawChocolate = true;
+          bDrawGun = false;
+        } else if (testList.get(currentTestIndex).wrongResponse > 0) {
+          dispenseMaltesers = 0;
+          airBlast = testList.get( currentTestIndex ).wrongResponse;
+          bDrawChocolate = false;
+          bDrawGun = true;
+        }
+      } 
     }
 
 
@@ -217,8 +234,8 @@ class ModeSetup extends Mode
 
   void keyPressed()
   {
-    if ( key == 'q' || key == ESC )
-      abortTest();
+    //if ( key == 'q' || key == ESC )
+     // abortTest();
   }
 
 

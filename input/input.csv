@@ -1,1 +1,1 @@
-Test ID,LightPosition,numLights,Colour,LeftReward,RightReward,WrongResponse,CorrectResponse2,46,1,aqua,,,7,71,5,9,red,1,10,3,1,10,8,blue,2,8,4,1,40,20,green,6,2,1,1,6,12,yellow,4,9,3,2,39,15,pink,,,6,102,46,6,aqua,,,9,72,18,18,white,,,4,12
+Test ID,LightPosition,numLights,Colour,LeftReward,RightReward,WrongResponse,CorrectResponse2,46,1,aqua,,,0,72,30,7,yellow,,,5,01,5,9,red,1,10,3,1,10,8,blue,2,8,4,1,40,20,green,6,2,1,1,6,12,yellow,4,9,3,2,39,15,pink,,,6,02,46,6,aqua,,,0,72,18,18,white,,,4,0

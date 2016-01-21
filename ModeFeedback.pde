@@ -8,7 +8,7 @@ class ModeFeedback extends Mode
   color ledColour;
   int currentLightPostion;
   int currentNumLights;
-  
+    
   ModeFeedback() {
     cp5.addTab("feedback")
       .setColorBackground(color(0, 160, 100))
@@ -47,6 +47,7 @@ class ModeFeedback extends Mode
     } else if ( testColour.equals("aqua")) {
       ledColour = colours.aqua;
     }
+    
   }
 
   //------------------------------------------------------------------------
@@ -107,9 +108,9 @@ class ModeFeedback extends Mode
       arduino.valuesToSend[4] = 1;
       arduino.valuesToSend[5] = 1;
     } else if ( testNum == 2) {
-      arduino.valuesToSend[3] = 1;
-      arduino.valuesToSend[4] = 0;
-      arduino.valuesToSend[5] = 1;
+      arduino.valuesToSend[3] = 0;
+      arduino.valuesToSend[4] = 1;
+      arduino.valuesToSend[5] = 0;
     }
     arduino.sendValues();
   }
@@ -133,6 +134,7 @@ class ModeFeedback extends Mode
     int startIndex = lightPosition - (numLights/2);
     int endIndex = lightPosition + (numLights/2);
 
+    //println("currentTestIndex = " + currentTestIndex);
     // Check if our start position is even or not
     if (numLights %  2 > 0) {
       startIndex -= 1;
@@ -150,8 +152,15 @@ class ModeFeedback extends Mode
     }
 
     popStyle();
-
+    
+    // Draw test progress as text
+    fill(0);
+    textSize(32);
+    text("Test Type = " + testList.get( currentTestIndex ).testID, (width/2)-180, 65);
+    text("Current Prompt = " + (currentTestIndex + 1) + " out of " + numTests, (width/2)-180, 100);
+    
     //draw pig
+    fill(255);
     image(pig, (width/2)-180, height/2, 360, 240);
 
     //draw chocolate
@@ -173,7 +182,7 @@ class ModeFeedback extends Mode
   //------------------------------------------------------------------------
   void keyPressed()
   { 
-    if ( key == 'q' || key == ESC )
-      abortTest();
+    //if ( key == 'q' || key == ESC )
+      //abortTest();
   }
 }

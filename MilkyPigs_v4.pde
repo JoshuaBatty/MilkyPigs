@@ -36,6 +36,8 @@ import controlP5.*;
 ControlP5 cp5;
 ControlP5 guiKill;
 ControlP5 guiPause;
+ControlP5 guiBluetooth;
+DropdownList ports;              //Define the variable ports as a Dropdownlist.
 
 // Arduino Send Receive 
 Arduino arduino;
@@ -87,8 +89,13 @@ void setup()
     .setColorLabel(color(0));
   ;
 
+  guiBluetooth = new ControlP5(this);
+  //Make a dropdown list calle ports. Lets explain the values: ("name", left margin, top margin, width, height (84 here since the boxes have a height of 20, and theres 1 px between each item so 4 items (or scroll bar).
+  ports = guiBluetooth.addDropdownList("bluetoothList", 10, 25, 160, 284);
+
   // Arduino 
   arduino = new Arduino(this); // call the constructor of arduino
+  arduino.customize(ports); //Setup the dropdownlist by using a function. This is more pratical if you have several list that needs the same settings.
 
   // Colours
   colours = new Colours();
@@ -120,6 +127,15 @@ public void controlEvent(ControlEvent theEvent) {
 
       ModeFeedback modeFeedback = (ModeFeedback)modes.get(RUN);
       ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
+
+      //----------------- BLUE TOOTH
+      if (name.equals("bluetoothList")) {
+        float idx = control.getValue();
+        arduino.index = int(idx);
+        //With this code, its a one time setup, so we state that the selection of port has been done. You could modify the code to stop the serial connection and establish a new one.
+        arduino.Comselected = true;
+        println("Port Selected!");
+      }
 
       //----------------- KILL SWITCH
       if (name.equals("KillSwitch")) {
@@ -177,6 +193,10 @@ public void controlEvent(ControlEvent theEvent) {
 
         // Then Put into start test mode
         modeFeedback.setActivePads();
+
+        // Once we have selected our bluetooth port and started the test, we dont need to have
+        // access to the drop down menu any longer. 
+        ports.hide();
       }
     }
   }
@@ -192,15 +212,31 @@ void init() {
   buttonPressed = "";
   PigName = "";
   cp5.get(Textfield.class, "PigID").clear();
+
+  testList.clear();
+  resultList.clear();
+  outTable.clearRows();
+
+  loadInput();
 }
 
 //DRAW
 //--------------------------------------
 void draw() {
+  // Check to see if we have selected a bluetooth port to connect to.
+  arduino.update();
+
   if (bSendFeedback == true) {
     ModeFeedback modeFeedback = (ModeFeedback)modes.get(RUN);
     ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
-    modeFeedback.sendFeedback(modeSetup.dispenseMaltesers, modeSetup.airBlast, 1);
+    println("Draws Button Pressed = " + buttonPressed);
+    if (buttonPressed.equals("0")) {
+      modeFeedback.sendFeedback(0, 0, 1);   
+      println("TimeOut!");
+    } else {
+      modeFeedback.sendFeedback(modeSetup.dispenseMaltesers, modeSetup.airBlast, 1);
+      println("SendValues!");
+    }
     timer = millis();
     bSendFeedback = false;
   }
@@ -211,10 +247,10 @@ void draw() {
 
     int ellapsedTime = millis() - timer;
     ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
-    
-    println("Ellapsed Time = " + ellapsedTime);
-    println("pause Duration = " + modeSetup.pauseTestDuration);
-    
+
+    //println("Ellapsed Time = " + ellapsedTime);
+    //println("pause Duration = " + modeSetup.pauseTestDuration);
+
     if (ellapsedTime > (modeSetup.pauseTestDuration*1000) && bResume == true) {
       nextPrompt();
       startTime = millis();
@@ -295,8 +331,14 @@ void keyPressed()
 //IO HANDLING
 void loadInput()
 {
-  inTable = loadTable("input/input.csv", "header");
-
+  File dir = new File(sketchPath("input/"));
+  String[] path = dir.list();
+  for (int i = 0; i < path.length; i++) {
+    if (path[i].contains(".csv")) {
+      println("Path = " + path[i]);
+      inTable = loadTable("input/" + path[i], "header");
+    }
+  }
   numTests = inTable.getRowCount();
   println(numTests + " tests found\n"); 
 
@@ -354,46 +396,54 @@ void initOutput()
 //--------------------------------------
 void writeResults()
 {
-  ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
-  modeSetup.endTest();
+  // Make sure that we have given the Pig and ID 
+  // Also make sure that we have actually done a test to save
+  // otherwise dont try and save
+  if (PigName != null && !PigName.isEmpty() && resultList.size() != 0) {
 
-  int counter = 0;
-  for ( TestResult result : resultList )
-  {
-    TableRow row = outTable.addRow();
-    if (counter == 0) {
-      row.setString( 0, PigName );
-      row.setString( 1, result.startDate );
-      row.setString( 2, result.startTime );
-      row.setString( 3, hour() + ":" + minute()+ ":" + second() );
-      row.setInt( 4, numTests );
-      row.setFloat( 5, modeSetup.timeOut );
-      row.setFloat( 6, modeSetup.touchSensitivity );
-      row.setFloat( 7, modeSetup.pauseTestDuration );
-    }
-    for ( int i = 0; i < result.responseList.size(); i++ )
+    ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
+    modeSetup.endTest();
+
+    int counter = 0;
+    for ( TestResult result : resultList )
     {
-      //row = outTable.addRow();
+      TableRow row = outTable.addRow();
+      if (counter == 0) {
+        row.setString( 0, PigName );
+        row.setString( 1, result.startDate );
+        row.setString( 2, result.startTime );
+        row.setString( 3, hour() + ":" + minute()+ ":" + second() );
+        row.setInt( 4, numTests );
+        row.setFloat( 5, modeSetup.timeOut );
+        row.setFloat( 6, modeSetup.touchSensitivity );
+        row.setFloat( 7, modeSetup.pauseTestDuration );
+      }
+      for ( int i = 0; i < result.responseList.size(); i++ )
+      {
+        //row = outTable.addRow();
 
-      row.setInt(8, 1 + result.responseList.get( i ).prompt );
-      row.setInt(9, result.responseList.get( i ).testType );
-      row.setString(10, result.responseList.get( i ).reactionTime );
-      row.setInt(11, result.responseList.get( i ).lightPosition );
-      row.setInt(12, result.responseList.get( i ).numLights );
-      row.setString(13, result.responseList.get( i ).colour );
-      row.setInt(14, result.responseList.get( i ).padPressed ); 
-      row.setInt(15, result.responseList.get( i ).numMaltesers ); 
-      row.setInt(16, result.responseList.get( i ).airBlastDuration );
+        row.setInt(8, 1 + result.responseList.get( i ).prompt );
+        row.setInt(9, result.responseList.get( i ).testType );
+        row.setString(10, result.responseList.get( i ).reactionTime );
+        row.setInt(11, result.responseList.get( i ).lightPosition );
+        row.setInt(12, result.responseList.get( i ).numLights );
+        row.setString(13, result.responseList.get( i ).colour );
+        row.setInt(14, result.responseList.get( i ).padPressed ); 
+        row.setInt(15, result.responseList.get( i ).numMaltesers ); 
+        row.setInt(16, result.responseList.get( i ).airBlastDuration );
+      }
+
+      if (counter == resultList.size()) {
+        println("counter = " + counter);
+        outTable.removeRow(outTable.getRowCount());
+      }
+
+      counter++;
     }
-
-    if (counter == resultList.size()) {
-      println("counter = " + counter);
-      outTable.removeRow(outTable.getRowCount());
-    }
-
-    counter++;
+    saveTable( outTable, filename );
+  } else {
+    println("Pig has no ID, failing to save");
   }
-  saveTable( outTable, filename );
 }
 
 
@@ -425,7 +475,6 @@ void serialEvent( Serial arduinoPort) {
   }  
   if (serial != null) { // if the string is not empty, print the following
     String[] a = split(serial, ','); // a new array (called 'a') that stores values into seperate cells (seperated by commas specified in your Arduino program)
-    println("a[0] = " + a[0]);
 
     if (a[0].equals("MP")) {
       println("a[0] = " + a[0]);
