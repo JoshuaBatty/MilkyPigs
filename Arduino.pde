@@ -4,8 +4,8 @@ PApplet pApplet;
 
 class Arduino {
 
-  int[] valuesToSend = {M, P, 0, 0, 0, 0, 0, 0};
-  byte out[] = new byte[8];
+  int[] valuesToSend = {M, P, 0, 0, 0, 0, 0, 0, 0};
+  byte out[] = new byte[9];
 
   int index;                          //The dropdown list will return a float value, which we will connvert into an int. we will use this int for that).
   String[] comList;                //A string to hold the ports in.
@@ -27,8 +27,19 @@ class Arduino {
   //---------------------------------------------
   void sendValues() {
     if (serialSet == true) {
-      out = byte(valuesToSend);  
+      out = byte(valuesToSend);
+
+      // Perform a check sum 
+      byte sum = 0;
+      for (byte b : out) {
+        sum ^= b;
+      }
+      // Append the check sum to then end of out byte arrays. 
+      out[8] = sum;
+
       arduinoPort.write(out);
+      bCheckSum = false;
+
       delay(100);
     }
   }
@@ -84,7 +95,14 @@ class Arduino {
     //Now we can count how many ports there are, well that is count how many chars there are, so we will divide by the amount of chars per port name.
     int size1 = comlist.length() / size2;
     //Now well add the ports to the list, we use a for loop for that. How many items is determined by the value of size1.
-    for (int i=0; i< size1; i++)
+
+    println("size1 = " + size1);
+    println("size2 = " + size2);
+    println("comList Size = " + comList.length);
+    println("arduinoPort.list() = " + arduinoPort.list());
+
+    //    for (int i=0; i< size1; i++)
+    for (int i=0; i< comList.length; i++)
     {
       //This is the line doing the actual adding of items, we use the current loop we are in to determin what place in the char array to access and what item number to add it as.
       ddl.addItem(comList[i], i);

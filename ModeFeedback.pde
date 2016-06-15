@@ -142,7 +142,7 @@ class ModeFeedback extends Mode
 
     int count = 0;
     for (int i = 0; i < 54; i++) {
-      if ( i > startIndex && i <= endIndex) {
+      if ( i >= startIndex && i < endIndex) {
         fill(ledColour);
       } else {
         fill(0, 0, 0);

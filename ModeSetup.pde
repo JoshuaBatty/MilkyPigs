@@ -145,10 +145,8 @@ class ModeSetup extends Mode
       fill(0);
       textSize(12);
       if (arduino.serialSet == true) {
-        // BLUETOOTH CONNECTED, READY TO START
         text("BLUETOOTH CONNECTED", 80, 200);
       } else if (arduino.Comselected == false) {
-        // SELECT A BLUETOOTH PORT
         text("SELECT A BLUETOOTH PORT", 80, 200);
       } 
     }

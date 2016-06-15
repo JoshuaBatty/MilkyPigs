@@ -54,6 +54,8 @@ Boolean bButtonPressed = false; // This is set to true when a response from the 
 // It is then set to false as soon as the pause timer starts. 
 Boolean bResume = true; // Make sure that scott is ready to recieve new values
 
+Boolean bCheckSum = true; // Make sure that 
+
 String buttonPressed = "";
 String testDuration = "";
 String PigName = "";
@@ -139,6 +141,7 @@ public void controlEvent(ControlEvent theEvent) {
 
       //----------------- KILL SWITCH
       if (name.equals("KillSwitch")) {
+        //clearResults();
         writeResults();
         init();
         for (int i = 0; i < 7; i++) {
@@ -148,6 +151,7 @@ public void controlEvent(ControlEvent theEvent) {
           else arduino.valuesToSend[i] = 0;
         }
         arduino.sendValues();
+        bSendFeedback = false;
         currentTestIndex = 0;
       }
 
@@ -223,41 +227,45 @@ void init() {
 //DRAW
 //--------------------------------------
 void draw() {
-  // Check to see if we have selected a bluetooth port to connect to.
-  arduino.update();
 
-  if (bSendFeedback == true) {
-    ModeFeedback modeFeedback = (ModeFeedback)modes.get(RUN);
-    ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
-    println("Draws Button Pressed = " + buttonPressed);
-    if (buttonPressed.equals("0")) {
-      modeFeedback.sendFeedback(0, 0, 1);   
-      println("TimeOut!");
-    } else {
-      modeFeedback.sendFeedback(modeSetup.dispenseMaltesers, modeSetup.airBlast, 1);
-      println("SendValues!");
+  if (bCheckSum = true) {
+
+    // Check to see if we have selected a bluetooth port to connect to.
+    arduino.update();
+
+    if (bSendFeedback == true) {
+      ModeFeedback modeFeedback = (ModeFeedback)modes.get(RUN);
+      ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
+      println("Draws Button Pressed = " + buttonPressed);
+      if (buttonPressed.equals("0")) {
+        modeFeedback.sendFeedback(0, 0, 1);   
+        println("TimeOut!");
+      } else {
+        modeFeedback.sendFeedback(modeSetup.dispenseMaltesers, modeSetup.airBlast, 1);
+        println("SendValues!");
+      }
+      timer = millis();
+      bSendFeedback = false;
     }
-    timer = millis();
-    bSendFeedback = false;
-  }
 
-  // Pig chooses a pad, reward or punishment is administered, LED colours are set to off, “pause for ’n’ seconds”, next prompt...
-  if (bButtonPressed == true) {
-    pause();
+    // Pig chooses a pad, reward or punishment is administered, LED colours are set to off, “pause for ’n’ seconds”, next prompt...
+    if (bButtonPressed == true) {
+      pause();
 
-    int ellapsedTime = millis() - timer;
-    ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
+      int ellapsedTime = millis() - timer;
+      ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
 
-    //println("Ellapsed Time = " + ellapsedTime);
-    //println("pause Duration = " + modeSetup.pauseTestDuration);
+      //println("Ellapsed Time = " + ellapsedTime);
+      //println("pause Duration = " + modeSetup.pauseTestDuration);
 
-    if (ellapsedTime > (modeSetup.pauseTestDuration*1000) && bResume == true) {
-      nextPrompt();
-      startTime = millis();
+      if (ellapsedTime > (modeSetup.pauseTestDuration*1000) && bResume == true) {
+        nextPrompt();
+        startTime = millis();
+      }
     }
-  }
 
-  modes.get(mode).draw();
+    modes.get(mode).draw();
+  }
 }
 
 //--------------------------------------
@@ -304,6 +312,7 @@ void mousePressed()
 //KEYPRESSES
 void keyPressed()
 {
+  /*
   if (key == '1') {
     receiveButtonPressed("1", "1000");
   } else if (key == '2') {
@@ -323,7 +332,10 @@ void keyPressed()
     writeResults();
   } else if (key == 's') {
     writeResults();
+  } else if (key == 'c') {
+    clearResults();
   }
+  */
 }
 
 
@@ -433,16 +445,36 @@ void writeResults()
         row.setInt(16, result.responseList.get( i ).airBlastDuration );
       }
 
+      /*
       if (counter == resultList.size()) {
-        println("counter = " + counter);
-        outTable.removeRow(outTable.getRowCount());
-      }
-
+       println("counter = " + counter);
+       outTable.removeRow(outTable.getRowCount());
+       }
+       */
       counter++;
     }
     saveTable( outTable, filename );
   } else {
     println("Pig has no ID, failing to save");
+  }
+}
+
+//--------------------------------------
+void clearResults() {    
+  outTable.clearRows();
+  
+  String tempFileName = sketchPath(filename);
+  File file = sketchFile(tempFileName);
+  if (file.exists()) { 
+    println("The file exists");
+  }
+  System.gc(); // the key to succes
+  boolean succes = file.delete();
+  if (succes) { 
+    println("The file was deleted");
+  }
+  if (!file.exists()) { 
+    println("The file no longer exists");
   }
 }
 
@@ -462,6 +494,12 @@ void receiveButtonPressed(String padNumber, String reactionTime) {
   bResume = false;
   ModeSetup modeSetup = (ModeSetup)modes.get(SETUP);
   modeSetup.saveResponse();
+  
+  // Here we are writing the results to the csv file after each prompt 
+  // Then we dlete the file and save the whole thing again after the next prompt
+  // This way if the software crashes then the resutls of the test are not lost. 
+ // clearResults();
+ // writeResults();
 }
 
 // Each time we see incoming data this method gets called. 
@@ -480,12 +518,14 @@ void serialEvent( Serial arduinoPort) {
       println("a[0] = " + a[0]);
       println("a[1] = " + a[1]);
       println("a[2] = " + a[2]);
-
       receiveButtonPressed(a[1], a[2]);
-    }
-    if (a[0].equals("MR")) {
+    } else if (a[0].equals("MR")) {
       bResume = true;
       println("RESUME DELIVERY");
+    } else if (a[0].equals("MC")) {
+      bCheckSum = true;
+    } else {
+      arduino.sendValues();
     }
   }
 }
